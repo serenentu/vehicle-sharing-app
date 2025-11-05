@@ -148,6 +148,10 @@ service cloud.firestore {
 
 **Solution**: Follow the steps in "Step 2: Add Android App to Firebase" to add your SHA-1 fingerprint.
 
+### Problem: Gradle build error with "DependencyHandler.module()" (Gradle 9.x)
+
+**Solution**: This error occurs when using Gradle 9.x with the deprecated `allprojects` block. The project has been updated to use `dependencyResolutionManagement` in `settings.gradle` instead, which is compatible with Gradle 9.x. If you're using an older version of the project, ensure your `build.gradle` and `settings.gradle` files are up to date.
+
 ## Additional Resources
 
 - [Firebase Documentation](https://firebase.google.com/docs)
