@@ -21,7 +21,7 @@ class PostTripFragment : Fragment() {
     
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
-    private var selectedDateTime: Long = 0L
+    private var selectedDateTime: Long? = null
     
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,7 +65,7 @@ class PostTripFragment : Fragment() {
                 return@setOnClickListener
             }
             
-            if (selectedDateTime == 0L) {
+            if (selectedDateTime == null) {
                 Toast.makeText(context, "Please select date and time", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -93,7 +93,7 @@ class PostTripFragment : Fragment() {
                         driverName = userName,
                         origin = origin,
                         destination = destination,
-                        dateTime = selectedDateTime,
+                        dateTime = selectedDateTime!!,
                         seatsAvailable = seats,
                         noSmoking = cbNoSmoking.isChecked,
                         noPets = cbNoPets.isChecked,
@@ -117,7 +117,7 @@ class PostTripFragment : Fragment() {
                             cbNoSmoking.isChecked = false
                             cbNoPets.isChecked = false
                             cbMusicAllowed.isChecked = false
-                            selectedDateTime = 0L
+                            selectedDateTime = null
                             btnPostTrip.isEnabled = true
                         }
                         .addOnFailureListener { e ->
