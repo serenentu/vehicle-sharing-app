@@ -31,22 +31,22 @@ The Vehicle Sharing App aims to facilitate carpooling and vehicle sharing among 
 ## Technology Stack
 
 - **Platform**: Android
-- **Language**: Kotlin
+- **Language**: Kotlin 1.9.0
 - **Architecture**: MVVM (Model-View-ViewModel)
 - **Backend**: Firebase (Authentication, Firestore, Storage)
 - **UI**: Material Design Components, Jetpack Navigation
 - **Minimum SDK**: 21 (Android 5.0)
-- **Target SDK**: 33 (Android 13)
+- **Target SDK**: 34 (Android 14)
 
 ## Setup Instructions
 
 ### Prerequisites
 
-1. Android Studio (Arctic Fox or later)
+1. Android Studio (Flamingo or later)
 2. JDK 8 or higher
-3. Android SDK with API 33
+3. Android SDK with API 34
 4. Firebase account
-5. Gradle 7.6.4 (included via Gradle Wrapper)
+5. Gradle 8.2.1 (included via Gradle Wrapper)
 
 ### Firebase Setup
 
@@ -79,7 +79,7 @@ The Vehicle Sharing App aims to facilitate carpooling and vehicle sharing among 
    ```bash
    ./gradlew build
    ```
-   Note: The project uses Gradle 7.6.4 via the Gradle Wrapper for compatibility with Android Gradle Plugin 7.3.1. Do not use system Gradle 9.x as it will cause compatibility issues with the deprecated `module()` API.
+   Note: The project now uses Gradle 8.2.1 and Android Gradle Plugin 8.1.0, which are fully compatible with modern Gradle versions and resolve the deprecated `module()` API issue.
 
 5. Sync Gradle files in Android Studio:
    - File → Sync Project with Gradle Files
@@ -173,10 +173,10 @@ See the `/docs` folder for detailed project documentation:
    - Check MainActivity's navigation setup
    - Verify bottom navigation visibility logic
 
-4. **Gradle version compatibility error (`module()` method not found)**
-   - Use the included Gradle Wrapper (`./gradlew`) instead of system Gradle
-   - The project requires Gradle 7.6.4 for compatibility with Android Gradle Plugin 7.3.1
-   - Gradle 9.x removed the deprecated `module()` API and is not compatible
+4. **Gradle version compatibility**
+   - The project now uses Gradle 8.2.1 and Android Gradle Plugin 8.1.0
+   - These versions are fully compatible and resolve the deprecated `module()` API issue
+   - Always use the included Gradle Wrapper (`./gradlew`) for consistent builds
 
 ## Contributors
 
