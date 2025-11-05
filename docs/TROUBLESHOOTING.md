@@ -123,7 +123,11 @@ See `docs/GRADLE_FIX.md` for detailed information.
    - Click "Create database"
    - Start in test mode for development
 
-2. Verify security rules (for production, use more restrictive rules):
+2. Verify security rules:
+   
+   **⚠️ IMPORTANT: These rules are for development/testing only!**
+   
+   For development:
    ```javascript
    rules_version = '2';
    service cloud.firestore {
@@ -133,6 +137,25 @@ See `docs/GRADLE_FIX.md` for detailed information.
        }
      }
    }
+   ```
+   
+   For production, use more restrictive rules that validate specific fields and conditions. Example:
+   ```javascript
+   rules_version = '2';
+   service cloud.firestore {
+     match /databases/{database}/documents {
+       match /users/{userId} {
+         allow read: if request.auth != null;
+         allow write: if request.auth != null && request.auth.uid == userId;
+       }
+       match /trips/{tripId} {
+         allow read: if request.auth != null;
+         allow create: if request.auth != null && request.auth.uid == request.resource.data.driverId;
+         allow update, delete: if request.auth != null && request.auth.uid == resource.data.driverId;
+       }
+     }
+   }
+   ```
    ```
 
 3. Check internet permissions in `AndroidManifest.xml`:
@@ -259,12 +282,18 @@ See `docs/GRADLE_FIX.md` for detailed information.
    }
    ```
 
-3. Clear dependency cache:
+3. Try rebuilding first:
+   ```bash
+   ./gradlew clean build
+   ```
+
+4. If step 3 doesn't work, clear dependency cache:
    ```bash
    ./gradlew clean --refresh-dependencies
    ```
+   **Note:** The `--refresh-dependencies` flag forces re-download of all dependencies, which can be slow. Only use this if a regular clean build doesn't resolve the issue.
 
-4. If behind a proxy, configure in `gradle.properties`:
+5. If behind a proxy, configure in `gradle.properties`:
    ```properties
    systemProp.http.proxyHost=your.proxy.host
    systemProp.http.proxyPort=8080
