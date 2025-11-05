@@ -60,8 +60,8 @@ To design and develop an Android application that facilitates vehicle sharing by
 ### Technology Stack
 ```
 Frontend:
-- Kotlin 1.7.20
-- Android SDK 33 (Target), 21 (Min)
+- Kotlin 1.9.0
+- Android SDK 34 (Target), 21 (Min)
 - Material Design Components
 - ConstraintLayout
 - RecyclerView
@@ -70,10 +70,11 @@ Frontend:
 Backend:
 - Firebase Authentication
 - Cloud Firestore
-- Firebase BOM 31.2.0
+- Firebase BOM 32.5.0
 
 Build:
-- Gradle 7.3.1
+- Android Gradle Plugin 8.1.0
+- Gradle 8.2.1
 - Android Studio
 ```
 
