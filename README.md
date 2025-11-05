@@ -42,7 +42,7 @@ The Vehicle Sharing App aims to facilitate carpooling and vehicle sharing among 
 
 ### Prerequisites
 
-1. Android Studio (Flamingo or later)
+1. Android Studio (Hedgehog 2023.1.1 or later)
 2. JDK 8 or higher
 3. Android SDK with API 34
 4. Firebase account
