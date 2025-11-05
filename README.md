@@ -119,11 +119,13 @@ vehicle-sharing-app/
 
 See the `/docs` folder for detailed project documentation:
 
-- **requirements.md** - Functional and non-functional requirements
-- **features_scope.md** - Features and project scope
-- **literature_review.md** - Review of existing solutions
-- **system_architecture.md** - Detailed system architecture
-- **database_schema.md** - Firebase Firestore schema and security rules
+- **[requirements.md](docs/requirements.md)** - Functional and non-functional requirements
+- **[features_scope.md](docs/features_scope.md)** - Features and project scope
+- **[literature_review.md](docs/literature_review.md)** - Review of existing solutions
+- **[system_architecture.md](docs/system_architecture.md)** - Detailed system architecture
+- **[database_schema.md](docs/database_schema.md)** - Firebase Firestore schema and security rules
+- **[firebase_setup.md](docs/firebase_setup.md)** - Step-by-step Firebase setup guide
+- **[feature_implementation.md](docs/feature_implementation.md)** - Complete feature implementation summary
 
 ## Development Guidelines
 

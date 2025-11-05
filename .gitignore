@@ -1,0 +1,47 @@
+# Build and local files
+*.iml
+.gradle
+/local.properties
+/.idea/
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# Android Studio
+*.iws
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/gradle.xml
+.idea/assetWizardSettings.xml
+.idea/dictionaries
+.idea/libraries
+.idea/shelf
+.idea/modules.xml
+.idea/.name
+.idea/compiler.xml
+.idea/copyright/profiles_settings.xml
+.idea/encodings.xml
+.idea/misc.xml
+.idea/vcs.xml
+
+# Keystore files
+*.jks
+*.keystore
+
+# Google Services (users should use their own)
+# Uncomment the line below if you want to ignore google-services.json
+# app/google-services.json
+
+# Backup files
+*.bak
+*.tmp
+*~
+
+# Logs
+*.log
+
+# OS generated files
+Thumbs.db
