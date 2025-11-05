@@ -46,6 +46,7 @@ The Vehicle Sharing App aims to facilitate carpooling and vehicle sharing among 
 2. JDK 8 or higher
 3. Android SDK with API 33
 4. Firebase account
+5. Gradle 7.6.4 (included via Gradle Wrapper)
 
 ### Firebase Setup
 
@@ -74,10 +75,16 @@ The Vehicle Sharing App aims to facilitate carpooling and vehicle sharing among 
 
 3. Replace `app/google-services.json` with your Firebase configuration file
 
-4. Sync Gradle files:
+4. Build the project using the Gradle Wrapper:
+   ```bash
+   ./gradlew build
+   ```
+   Note: The project uses Gradle 7.6.4 via the Gradle Wrapper for compatibility with Android Gradle Plugin 7.3.1. Do not use system Gradle 9.x as it will cause compatibility issues with the deprecated `module()` API.
+
+5. Sync Gradle files in Android Studio:
    - File → Sync Project with Gradle Files
 
-5. Build and run the app:
+6. Build and run the app:
    - Select an emulator or connected device
    - Click Run (or press Shift + F10)
 
@@ -104,6 +111,12 @@ vehicle-sharing-app/
 │   │       └── AndroidManifest.xml
 │   ├── build.gradle                      # App-level Gradle config
 │   └── google-services.json             # Firebase config (replace with yours)
+├── gradle/
+│   └── wrapper/                          # Gradle wrapper files
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+├── gradlew                               # Gradle wrapper script (Unix)
+├── gradlew.bat                           # Gradle wrapper script (Windows)
 ├── docs/                                 # Project documentation
 │   ├── requirements.md
 │   ├── features_scope.md
@@ -159,6 +172,11 @@ See the `/docs` folder for detailed project documentation:
 3. **Bottom navigation not showing**
    - Check MainActivity's navigation setup
    - Verify bottom navigation visibility logic
+
+4. **Gradle version compatibility error (`module()` method not found)**
+   - Use the included Gradle Wrapper (`./gradlew`) instead of system Gradle
+   - The project requires Gradle 7.6.4 for compatibility with Android Gradle Plugin 7.3.1
+   - Gradle 9.x removed the deprecated `module()` API and is not compatible
 
 ## Contributors
 
