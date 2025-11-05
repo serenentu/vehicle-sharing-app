@@ -139,6 +139,8 @@ See the `/docs` folder for detailed project documentation:
 - **[database_schema.md](docs/database_schema.md)** - Firebase Firestore schema and security rules
 - **[firebase_setup.md](docs/firebase_setup.md)** - Step-by-step Firebase setup guide
 - **[feature_implementation.md](docs/feature_implementation.md)** - Complete feature implementation summary
+- **[GRADLE_FIX.md](docs/GRADLE_FIX.md)** - Build configuration fix details
+- **[TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)** - Comprehensive troubleshooting guide
 
 ## Development Guidelines
 
@@ -161,22 +163,26 @@ See the `/docs` folder for detailed project documentation:
 
 ### Common Issues
 
-1. **Build fails with Firebase error**
-   - Ensure `google-services.json` is properly configured
-   - Check that Firebase project package name matches app package name
+1. **Build fails with invalid Gradle Plugin version**
+   - **Fixed**: Updated to Android Gradle Plugin 8.1.0 and Gradle 8.2.1
+   - Always use `./gradlew` instead of system `gradle` command
+   - See `docs/GRADLE_FIX.md` for details
 
-2. **Navigation doesn't work**
+2. **Build fails with Firebase error**
+   - Ensure `google-services.json` is properly configured
+   - Check that Firebase project package name matches app package name (`com.serenentu.vehiclesharing`)
+
+3. **Navigation doesn't work**
    - Verify all fragments are registered in `nav_graph.xml`
    - Check that fragment IDs match between navigation and menu files
 
-3. **Bottom navigation not showing**
+4. **Bottom navigation not showing**
    - Check MainActivity's navigation setup
    - Verify bottom navigation visibility logic
 
-4. **Gradle version compatibility**
-   - The project now uses Gradle 8.2.1 and Android Gradle Plugin 8.1.0
-   - These versions are fully compatible and resolve the deprecated `module()` API issue
-   - Always use the included Gradle Wrapper (`./gradlew`) for consistent builds
+5. **Other issues**
+   - See comprehensive [Troubleshooting Guide](docs/TROUBLESHOOTING.md) for detailed solutions
+   - See [Gradle Fix Documentation](docs/GRADLE_FIX.md) for build configuration details
 
 ## Contributors
 
