@@ -1,19 +1,111 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:fillViewport="true">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Post a Trip"
-        android:textSize="18sp"
-        android:layout_marginBottom="16dp"/>
-        
-    <!-- Add inputs for trip details here -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="(Trip posting form goes here)" />
-</LinearLayout>
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Post a Trip"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trip Details"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/etOrigin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Origin"
+            android:drawableStart="@android:drawable/ic_menu_mylocation"
+            android:drawablePadding="8dp"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/etDestination"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Destination"
+            android:drawableStart="@android:drawable/ic_menu_mylocation"
+            android:drawablePadding="8dp"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/etDateTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Date and Time"
+            android:drawableStart="@android:drawable/ic_menu_recent_history"
+            android:drawablePadding="8dp"
+            android:focusable="false"
+            android:clickable="true"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/etSeatsAvailable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Seats Available"
+            android:inputType="number"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Preferences"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/cbNoSmoking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Smoking"
+            android:layout_marginBottom="4dp" />
+
+        <CheckBox
+            android:id="@+id/cbNoPets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Pets"
+            android:layout_marginBottom="4dp" />
+
+        <CheckBox
+            android:id="@+id/cbMusicAllowed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Music Allowed"
+            android:layout_marginBottom="16dp" />
+
+        <EditText
+            android:id="@+id/etAdditionalNotes"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:hint="Additional Notes"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/btnPostTrip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Post Trip" />
+
+    </LinearLayout>
+</ScrollView>

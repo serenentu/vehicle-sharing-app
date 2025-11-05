@@ -1,19 +1,114 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="32dp">
+    android:fillViewport="true">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Profile"
-        android:textSize="18sp"
-        android:layout_marginBottom="16dp"/>
-    <!-- Placeholder for profile info -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="(Profile info goes here)" />
-</LinearLayout>
+        android:orientation="vertical"
+        android:padding="32dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Profile"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp"/>
+
+        <TextView
+            android:id="@+id/tvUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User Name"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/tvUserEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="user@example.com"
+            android:textSize="14sp"
+            android:layout_marginBottom="24dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Preferences"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gender Preference"
+            android:textSize="14sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"/>
+
+        <RadioGroup
+            android:id="@+id/rgGenderPreference"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+            
+            <RadioButton
+                android:id="@+id/rbNoPreference"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Preference"
+                android:checked="true" />
+            
+            <RadioButton
+                android:id="@+id/rbSameGender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Same Gender Only" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Other Preferences"
+            android:textSize="14sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"/>
+
+        <CheckBox
+            android:id="@+id/cbNoSmokingProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Prefer No Smoking" />
+
+        <CheckBox
+            android:id="@+id/cbNoPetsProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Prefer No Pets" />
+
+        <CheckBox
+            android:id="@+id/cbMusicProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enjoy Music During Ride"
+            android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/btnSaveProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save Preferences"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Logout" />
+
+    </LinearLayout>
+</ScrollView>
