@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1098465159659",
+    "project_id": "vehicle-sharing-app-1c7ca",
+    "storage_bucket": "vehicle-sharing-app-1c7ca.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1098465159659:android:07bf358a60217baad411ae",
+        "android_client_info": {
+          "package_name": "com.example.vehiclesharingapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcpPgwxJmDs7RrT2M9KmuOSxNT7pjIOwg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1098465159659:android:88f90bfe3528d6d5d411ae",
+        "android_client_info": {
+          "package_name": "com.serenentu.vehiclesharing"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcpPgwxJmDs7RrT2M9KmuOSxNT7pjIOwg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
