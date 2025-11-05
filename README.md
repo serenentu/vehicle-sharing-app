@@ -2,6 +2,17 @@
 
 This is the repository for the Vehicle Sharing App developed as a Final Year Project (FYP). The app is built with Android Studio using Kotlin and integrates Firebase for backend services.
 
+## 📸 Visual Documentation & Screenshots
+
+**Want to see what the app looks like?** Check out our comprehensive visual documentation:
+
+- **[RUNNING_THE_APP.md](RUNNING_THE_APP.md)** - Complete guide to running the app with screen-by-screen explanations
+- **[docs/screenshots/VISUAL_MOCKUPS.md](docs/screenshots/VISUAL_MOCKUPS.md)** - Detailed ASCII art mockups of all 7 screens
+- **[docs/screenshots/USER_JOURNEY.md](docs/screenshots/USER_JOURNEY.md)** - Complete step-by-step user journeys
+- **[docs/screenshots/QUICK_REFERENCE.md](docs/screenshots/QUICK_REFERENCE.md)** - Quick visual reference guide
+
+These documents provide detailed visual representations and expected behavior for every screen and feature in the application.
+
 ## Project Overview
 
 The Vehicle Sharing App aims to facilitate carpooling and vehicle sharing among users, connecting drivers with passengers for shared travel. The app emphasizes safety, user preferences, and real-time ride matching.
