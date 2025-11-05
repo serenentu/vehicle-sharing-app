@@ -5,11 +5,20 @@
     android:gravity="center"
     android:padding="32dp">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="32dp" />
+
     <EditText
         android:id="@+id/etUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Username"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
         android:layout_marginBottom="8dp" />
 
     <EditText
@@ -25,4 +34,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Login" />
+
+    <TextView
+        android:id="@+id/tvGoToSignup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Don't have an account? Sign up"
+        android:textColor="?attr/colorPrimary"
+        android:layout_marginTop="16dp" />
 </LinearLayout>

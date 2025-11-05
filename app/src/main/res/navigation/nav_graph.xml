@@ -47,7 +47,13 @@
     <fragment
         android:id="@+id/historyFragment"
         android:name="com.serenentu.vehiclesharing.HistoryFragment"
-        android:label="History" />
+        android:label="History">
+        <action
+            android:id="@+id/action_historyFragment_to_welcomeFragment"
+            app:destination="@id/welcomeFragment"
+            app:popUpTo="@id/welcomeFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
     
     <fragment
         android:id="@+id/browseTripsFragment"
@@ -62,6 +68,12 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.serenentu.vehiclesharing.ProfileFragment"
-        android:label="Profile" />
+        android:label="Profile">
+        <action
+            android:id="@+id/action_profileFragment_to_welcomeFragment"
+            app:destination="@id/welcomeFragment"
+            app:popUpTo="@id/welcomeFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
         
 </navigation>
