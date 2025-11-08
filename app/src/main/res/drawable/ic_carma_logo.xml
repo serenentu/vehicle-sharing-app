@@ -1,0 +1,75 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    
+    <!-- Outer circle with gradient effect (karma circle) -->
+    <path
+        android:pathData="M60,10 A50,50 0 1,1 60,110 A50,50 0 1,1 60,10 Z"
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.15"/>
+    
+    <!-- Main car body - cute rounded shape -->
+    <path
+        android:pathData="M35,55 Q30,55 30,60 L30,75 Q30,80 35,80 L85,80 Q90,80 90,75 L90,60 Q90,55 85,55 L35,55 Z"
+        android:fillColor="#FFFFFF"/>
+    
+    <!-- Car roof - rounded cute style -->
+    <path
+        android:pathData="M42,45 Q42,40 47,40 L73,40 Q78,40 78,45 L78,55 L42,55 Z"
+        android:fillColor="#FFFFFF"/>
+    
+    <!-- Left wheel -->
+    <path
+        android:pathData="M40,80 A8,8 0 1,1 40,96 A8,8 0 1,1 40,80 Z"
+        android:fillColor="#FFFFFF"/>
+    
+    <!-- Right wheel -->
+    <path
+        android:pathData="M80,80 A8,8 0 1,1 80,96 A8,8 0 1,1 80,80 Z"
+        android:fillColor="#FFFFFF"/>
+    
+    <!-- Windows - two cute windows -->
+    <path
+        android:pathData="M46,45 Q46,43 48,43 L58,43 Q60,43 60,45 L60,52 L46,52 Z"
+        android:fillColor="#60A5FA"
+        android:fillAlpha="0.7"/>
+    
+    <path
+        android:pathData="M62,45 Q62,43 64,43 L74,43 Q76,43 76,45 L76,52 L62,52 Z"
+        android:fillColor="#60A5FA"
+        android:fillAlpha="0.7"/>
+    
+    <!-- Cute smile/grill -->
+    <path
+        android:pathData="M50,65 Q60,70 70,65"
+        android:strokeColor="#60A5FA"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"/>
+    
+    <!-- Sparkle 1 (top right) - karma sparkle -->
+    <path
+        android:pathData="M85,25 L87,30 L92,30 L88,33 L90,38 L85,35 L80,38 L82,33 L78,30 L83,30 Z"
+        android:fillColor="#FFFFFF"/>
+    
+    <!-- Sparkle 2 (top left) -->
+    <path
+        android:pathData="M25,35 L26.5,38.5 L30,38.5 L27.25,40.5 L28.75,44 L25,41.5 L21.25,44 L22.75,40.5 L20,38.5 L23.5,38.5 Z"
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.8"/>
+    
+    <!-- Sparkle 3 (bottom right) -->
+    <path
+        android:pathData="M95,65 L96.5,68.5 L100,68.5 L97.25,70.5 L98.75,74 L95,71.5 L91.25,74 L92.75,70.5 L90,68.5 L93.5,68.5 Z"
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.8"/>
+    
+    <!-- Heart symbol (good karma) - small heart above car -->
+    <path
+        android:pathData="M60,32 L58,30 Q56,28 54,28 Q51,28 51,31 Q51,33 54,36 L60,42 L66,36 Q69,33 69,31 Q69,28 66,28 Q64,28 62,30 Z"
+        android:fillColor="#FF6B9D"
+        android:fillAlpha="0.9"/>
+    
+</vector>
