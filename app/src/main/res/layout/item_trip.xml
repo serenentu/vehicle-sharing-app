@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    app:strokeWidth="0dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Driver Avatar Circle -->
+        <View
+            android:id="@+id/driverAvatar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_circle_primary"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Driver Name -->
+        <TextView
+            android:id="@+id/tvDriverName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Driver Name"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary"
+            android:layout_marginStart="12dp"
+            app:layout_constraintTop_toTopOf="@id/driverAvatar"
+            app:layout_constraintStart_toEndOf="@id/driverAvatar"
+            app:layout_constraintEnd_toStartOf="@id/tvSeats" />
+
+        <!-- Date/Time -->
+        <TextView
+            android:id="@+id/tvDateTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Dec 25, 10:00 AM"
+            android:textSize="12sp"
+            android:textColor="@color/text_secondary"
+            android:layout_marginStart="12dp"
+            app:layout_constraintTop_toBottomOf="@id/tvDriverName"
+            app:layout_constraintStart_toEndOf="@id/driverAvatar"
+            app:layout_constraintEnd_toStartOf="@id/tvSeats" />
+
+        <!-- Available Seats -->
+        <TextView
+            android:id="@+id/tvSeats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3 seats"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/accent"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:background="@drawable/bg_chip"
+            app:layout_constraintTop_toTopOf="@id/driverAvatar"
+            app:layout_constraintBottom_toBottomOf="@id/driverAvatar"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Origin -->
+        <ImageView
+            android:id="@+id/ivOrigin"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_location"
+            android:tint="@color/accent"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/driverAvatar"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tvOrigin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Origin Location"
+            android:textSize="15sp"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold"
+            android:layout_marginStart="8dp"
+            app:layout_constraintTop_toTopOf="@id/ivOrigin"
+            app:layout_constraintBottom_toBottomOf="@id/ivOrigin"
+            app:layout_constraintStart_toEndOf="@id/ivOrigin"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Arrow -->
+        <TextView
+            android:id="@+id/tvArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="↓"
+            android:textSize="18sp"
+            android:textColor="@color/text_secondary"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="4dp"
+            app:layout_constraintTop_toBottomOf="@id/ivOrigin"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Destination -->
+        <ImageView
+            android:id="@+id/ivDestination"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_location"
+            android:tint="@color/error"
+            android:layout_marginTop="4dp"
+            app:layout_constraintTop_toBottomOf="@id/tvArrow"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tvDestination"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Destination Location"
+            android:textSize="15sp"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold"
+            android:layout_marginStart="8dp"
+            app:layout_constraintTop_toTopOf="@id/ivDestination"
+            app:layout_constraintBottom_toBottomOf="@id/ivDestination"
+            app:layout_constraintStart_toEndOf="@id/ivDestination"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Preferences Container -->
+        <LinearLayout
+            android:id="@+id/preferencesContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/ivDestination"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/tvNoSmoking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🚭 No Smoking"
+                android:textSize="12sp"
+                android:textColor="@color/text_secondary"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:background="@drawable/bg_chip"
+                android:layout_marginEnd="8dp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tvNoPets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🐾 No Pets"
+                android:textSize="12sp"
+                android:textColor="@color/text_secondary"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:background="@drawable/bg_chip"
+                android:layout_marginEnd="8dp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tvMusic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🎵 Music OK"
+                android:textSize="12sp"
+                android:textColor="@color/text_secondary"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:background="@drawable/bg_chip"
+                android:visibility="gone" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
