@@ -126,6 +126,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="🎵 Music Allowed"
+                android:textColor="@color/text_primary" />
+
+            <CheckBox
+                android:id="@+id/cbFilterQuietRide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🤫 Quiet Ride"
                 android:textColor="@color/text_primary"
                 android:layout_marginBottom="12dp" />
 

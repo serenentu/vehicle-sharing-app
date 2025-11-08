@@ -38,6 +38,21 @@
             app:layout_constraintStart_toEndOf="@id/driverAvatar"
             app:layout_constraintEnd_toStartOf="@id/tvSeats" />
 
+        <!-- Driver Badges -->
+        <TextView
+            android:id="@+id/tvDriverBadges"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="11sp"
+            android:textColor="@color/text_secondary"
+            android:layout_marginStart="12dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintTop_toBottomOf="@id/tvDriverName"
+            app:layout_constraintStart_toEndOf="@id/driverAvatar"
+            app:layout_constraintEnd_toStartOf="@id/tvSeats" />
+
         <!-- Date/Time -->
         <TextView
             android:id="@+id/tvDateTime"
@@ -47,7 +62,7 @@
             android:textSize="12sp"
             android:textColor="@color/text_secondary"
             android:layout_marginStart="12dp"
-            app:layout_constraintTop_toBottomOf="@id/tvDriverName"
+            app:layout_constraintTop_toBottomOf="@id/tvDriverBadges"
             app:layout_constraintStart_toEndOf="@id/driverAvatar"
             app:layout_constraintEnd_toStartOf="@id/tvSeats" />
 
@@ -177,6 +192,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="🎵 Music OK"
+                android:textSize="12sp"
+                android:textColor="@color/text_secondary"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:background="@drawable/bg_chip"
+                android:layout_marginEnd="8dp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tvQuietRide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🤫 Quiet"
                 android:textSize="12sp"
                 android:textColor="@color/text_secondary"
                 android:paddingStart="8dp"

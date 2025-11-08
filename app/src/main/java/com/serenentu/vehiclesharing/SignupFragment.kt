@@ -47,6 +47,16 @@ class SignupFragment : Fragment() {
                 return@setOnClickListener
             }
             
+            // NTU email validation
+            if (!email.endsWith("@e.ntu.edu.sg")) {
+                Toast.makeText(
+                    context,
+                    "Please use your NTU student email (@e.ntu.edu.sg)",
+                    Toast.LENGTH_LONG
+                ).show()
+                return@setOnClickListener
+            }
+            
             if (password != confirmPassword) {
                 Toast.makeText(context, "Passwords do not match", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener

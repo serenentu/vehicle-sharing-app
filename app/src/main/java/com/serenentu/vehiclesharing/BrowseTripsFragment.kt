@@ -44,6 +44,7 @@ class BrowseTripsFragment : Fragment() {
         val cbFilterNoSmoking = view.findViewById<CheckBox>(R.id.cbFilterNoSmoking)
         val cbFilterNoPets = view.findViewById<CheckBox>(R.id.cbFilterNoPets)
         val cbFilterMusic = view.findViewById<CheckBox>(R.id.cbFilterMusic)
+        val cbFilterQuietRide = view.findViewById<CheckBox>(R.id.cbFilterQuietRide)
         
         // Setup RecyclerView
         tripsAdapter = TripsAdapter(trips)
@@ -68,7 +69,8 @@ class BrowseTripsFragment : Fragment() {
                 destination,
                 cbFilterNoSmoking.isChecked,
                 cbFilterNoPets.isChecked,
-                cbFilterMusic.isChecked
+                cbFilterMusic.isChecked,
+                cbFilterQuietRide.isChecked
             )
             filterPanel.visibility = View.GONE
         }
@@ -84,7 +86,8 @@ class BrowseTripsFragment : Fragment() {
         destination: String = "",
         noSmoking: Boolean = false,
         noPets: Boolean = false,
-        musicAllowed: Boolean = false
+        musicAllowed: Boolean = false,
+        quietRide: Boolean = false
     ) {
         firestore.collection("trips")
             .whereEqualTo("status", "active")
@@ -118,6 +121,10 @@ class BrowseTripsFragment : Fragment() {
                         matches = false
                     }
                     
+                    if (quietRide && !trip.quietRide) {
+                        matches = false
+                    }
+                    
                     if (matches) {
                         trips.add(trip)
                     }
@@ -147,6 +154,7 @@ class BrowseTripsFragment : Fragment() {
         
         inner class TripViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val tvDriverName: TextView = itemView.findViewById(R.id.tvDriverName)
+            val tvDriverBadges: TextView = itemView.findViewById(R.id.tvDriverBadges)
             val tvDateTime: TextView = itemView.findViewById(R.id.tvDateTime)
             val tvSeats: TextView = itemView.findViewById(R.id.tvSeats)
             val tvOrigin: TextView = itemView.findViewById(R.id.tvOrigin)
@@ -154,6 +162,7 @@ class BrowseTripsFragment : Fragment() {
             val tvNoSmoking: TextView = itemView.findViewById(R.id.tvNoSmoking)
             val tvNoPets: TextView = itemView.findViewById(R.id.tvNoPets)
             val tvMusic: TextView = itemView.findViewById(R.id.tvMusic)
+            val tvQuietRide: TextView = itemView.findViewById(R.id.tvQuietRide)
         }
         
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TripViewHolder {
@@ -173,10 +182,46 @@ class BrowseTripsFragment : Fragment() {
             holder.tvOrigin.text = trip.origin
             holder.tvDestination.text = trip.destination
             
+            // Load driver badges from Firestore
+            firestore.collection("users")
+                .document(trip.driverUid)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        val badges = mutableListOf<String>()
+                        
+                        val hall = document.getString("hallResident")
+                        if (!hall.isNullOrEmpty()) {
+                            badges.add("🏠 $hall")
+                        }
+                        
+                        val club = document.getString("clubMember")
+                        if (!club.isNullOrEmpty()) {
+                            badges.add("👥 $club")
+                        }
+                        
+                        val cohort = document.getString("courseCohort")
+                        if (!cohort.isNullOrEmpty()) {
+                            badges.add("🎓 $cohort")
+                        }
+                        
+                        if (badges.isNotEmpty()) {
+                            holder.tvDriverBadges.text = badges.joinToString(" • ")
+                            holder.tvDriverBadges.visibility = View.VISIBLE
+                        } else {
+                            holder.tvDriverBadges.visibility = View.GONE
+                        }
+                    }
+                }
+                .addOnFailureListener {
+                    holder.tvDriverBadges.visibility = View.GONE
+                }
+            
             // Show/hide preference chips
             holder.tvNoSmoking.visibility = if (trip.noSmoking) View.VISIBLE else View.GONE
             holder.tvNoPets.visibility = if (trip.noPets) View.VISIBLE else View.GONE
             holder.tvMusic.visibility = if (trip.musicAllowed) View.VISIBLE else View.GONE
+            holder.tvQuietRide.visibility = if (trip.quietRide) View.VISIBLE else View.GONE
         }
         
         override fun getItemCount() = trips.size

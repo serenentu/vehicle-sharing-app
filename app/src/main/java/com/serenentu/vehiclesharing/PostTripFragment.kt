@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
@@ -13,6 +15,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.serenentu.vehiclesharing.data.NTULocations
 import com.serenentu.vehiclesharing.data.model.Trip
 import java.text.SimpleDateFormat
 import java.util.*
@@ -32,15 +35,29 @@ class PostTripFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
         
-        val etOrigin = view.findViewById<EditText>(R.id.etOrigin)
-        val etDestination = view.findViewById<EditText>(R.id.etDestination)
+        val etOrigin = view.findViewById<AutoCompleteTextView>(R.id.etOrigin)
+        val etDestination = view.findViewById<AutoCompleteTextView>(R.id.etDestination)
         val etDateTime = view.findViewById<EditText>(R.id.etDateTime)
         val etSeatsAvailable = view.findViewById<EditText>(R.id.etSeatsAvailable)
         val cbNoSmoking = view.findViewById<CheckBox>(R.id.cbNoSmoking)
         val cbNoPets = view.findViewById<CheckBox>(R.id.cbNoPets)
         val cbMusicAllowed = view.findViewById<CheckBox>(R.id.cbMusicAllowed)
+        val cbQuietRide = view.findViewById<CheckBox>(R.id.cbQuietRide)
         val etAdditionalNotes = view.findViewById<EditText>(R.id.etAdditionalNotes)
         val btnPostTrip = view.findViewById<Button>(R.id.btnPostTrip)
+        val tvCommonRoutes = view.findViewById<TextView>(R.id.tvCommonRoutes)
+        
+        // Setup location autocomplete
+        val locationAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            NTULocations.ALL_LOCATIONS
+        )
+        etOrigin.setAdapter(locationAdapter)
+        etDestination.setAdapter(locationAdapter)
+        
+        // Update common routes based on time
+        updateCommonRoutes(tvCommonRoutes)
         
         // Date and time picker
         etDateTime.setOnClickListener {
@@ -98,6 +115,7 @@ class PostTripFragment : Fragment() {
                         noSmoking = cbNoSmoking.isChecked,
                         noPets = cbNoPets.isChecked,
                         musicAllowed = cbMusicAllowed.isChecked,
+                        quietRide = cbQuietRide.isChecked,
                         additionalNotes = additionalNotes,
                         status = "active"
                     )
@@ -117,6 +135,7 @@ class PostTripFragment : Fragment() {
                             cbNoSmoking.isChecked = false
                             cbNoPets.isChecked = false
                             cbMusicAllowed.isChecked = false
+                            cbQuietRide.isChecked = false
                             selectedDateTime = null
                             btnPostTrip.isEnabled = true
                         }
@@ -162,5 +181,39 @@ class PostTripFragment : Fragment() {
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
         ).show()
+    }
+    
+    private fun updateCommonRoutes(textView: TextView) {
+        val calendar = Calendar.getInstance()
+        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        
+        // Determine time period
+        val timePeriod = when {
+            dayOfWeek == Calendar.FRIDAY && hour >= 17 -> "Friday Evening"
+            dayOfWeek == Calendar.SATURDAY -> "Saturday"
+            dayOfWeek == Calendar.SUNDAY -> "Sunday"
+            hour in 6..9 -> "Morning"
+            hour in 17..20 -> "Evening"
+            else -> "Any time"
+        }
+        
+        // Get relevant routes
+        val relevantRoutes = NTULocations.COMMON_ROUTES.filter { route ->
+            route.suggestedTimes.any { time ->
+                time.contains(timePeriod, ignoreCase = true) || 
+                (dayOfWeek == Calendar.SATURDAY && time.contains("Weekend", ignoreCase = true)) ||
+                (dayOfWeek == Calendar.SUNDAY && time.contains("Weekend", ignoreCase = true))
+            }
+        }.take(4)
+        
+        if (relevantRoutes.isNotEmpty()) {
+            val routeText = relevantRoutes.joinToString(" • ") { 
+                "${it.origin} → ${it.destination}" 
+            }
+            textView.text = "Popular for $timePeriod: $routeText"
+        } else {
+            textView.text = "NTU → Tampines • NTU → Airport • NTU → Orchard • NTU → Jurong East"
+        }
     }
 }

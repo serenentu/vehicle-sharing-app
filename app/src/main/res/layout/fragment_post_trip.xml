@@ -36,6 +36,44 @@
             app:layout_constraintTop_toBottomOf="@id/tvHeader"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <!-- Common Routes Info Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardCommonRoutes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="#E3F2FD"
+            app:layout_constraintTop_toBottomOf="@id/tvSubheader">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="💡 Popular Routes"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/tvCommonRoutes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="NTU → Tampines • NTU → Airport • NTU → Orchard • NTU → Jurong East"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary"
+                    android:lineSpacingExtra="2dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
         <!-- Trip Details Card -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardTripDetails"
@@ -44,7 +82,7 @@
             android:layout_marginTop="16dp"
             app:cardCornerRadius="16dp"
             app:cardElevation="2dp"
-            app:layout_constraintTop_toBottomOf="@id/tvSubheader">
+            app:layout_constraintTop_toBottomOf="@id/cardCommonRoutes">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -64,7 +102,7 @@
                 <!-- Origin Input -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilOrigin"
-                    style="@style/Widget.VehicleSharing.TextInputLayout"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Starting Point"
@@ -72,18 +110,19 @@
                     app:startIconDrawable="@drawable/ic_location"
                     app:startIconTint="@color/accent">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <AutoCompleteTextView
                         android:id="@+id/etOrigin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:completionThreshold="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Destination Input -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilDestination"
-                    style="@style/Widget.VehicleSharing.TextInputLayout"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Destination"
@@ -91,12 +130,13 @@
                     app:startIconDrawable="@drawable/ic_location"
                     app:startIconTint="@color/error">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <AutoCompleteTextView
                         android:id="@+id/etDestination"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:completionThreshold="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Date/Time Input -->
@@ -189,6 +229,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="🎵 Music Allowed"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginBottom="8dp" />
+
+                <CheckBox
+                    android:id="@+id/cbQuietRide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🤫 Quiet Ride"
                     android:textSize="16sp"
                     android:textColor="@color/text_primary" />
 

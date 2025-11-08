@@ -1,11 +1,16 @@
 package com.serenentu.vehiclesharing
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
@@ -13,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.serenentu.vehiclesharing.data.NTULocations
 import com.serenentu.vehiclesharing.data.model.User
 
 class ProfileFragment : Fragment() {
@@ -36,8 +42,28 @@ class ProfileFragment : Fragment() {
         val cbNoSmokingProfile = view.findViewById<CheckBox>(R.id.cbNoSmokingProfile)
         val cbNoPetsProfile = view.findViewById<CheckBox>(R.id.cbNoPetsProfile)
         val cbMusicProfile = view.findViewById<CheckBox>(R.id.cbMusicProfile)
+        val cbQuietRideProfile = view.findViewById<CheckBox>(R.id.cbQuietRideProfile)
+        val etHallResident = view.findViewById<AutoCompleteTextView>(R.id.etHallResident)
+        val etClubMember = view.findViewById<EditText>(R.id.etClubMember)
+        val etCourseCohort = view.findViewById<AutoCompleteTextView>(R.id.etCourseCohort)
         val btnSaveProfile = view.findViewById<Button>(R.id.btnSaveProfile)
         val btnLogout = view.findViewById<Button>(R.id.btnLogout)
+        val btnEmergencyCall = view.findViewById<Button>(R.id.btnEmergencyCall)
+        
+        // Setup dropdown adapters
+        val hallAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            listOf("") + NTULocations.HALLS
+        )
+        etHallResident.setAdapter(hallAdapter)
+        
+        val cohortAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            listOf("") + NTULocations.COURSE_COHORTS
+        )
+        etCourseCohort.setAdapter(cohortAdapter)
         
         val currentUser = auth.currentUser
         if (currentUser == null) {
@@ -66,6 +92,12 @@ class ProfileFragment : Fragment() {
                         cbNoSmokingProfile.isChecked = user.noSmokingPreference
                         cbNoPetsProfile.isChecked = user.noPetsPreference
                         cbMusicProfile.isChecked = user.musicPreference
+                        cbQuietRideProfile.isChecked = user.quietRidePreference
+                        
+                        // Set NTU badges
+                        etHallResident.setText(user.hallResident, false)
+                        etClubMember.setText(user.clubMember)
+                        etCourseCohort.setText(user.courseCohort, false)
                     }
                 } else {
                     // Profile doesn't exist, show basic info
@@ -84,7 +116,11 @@ class ProfileFragment : Fragment() {
                 "genderPreference" to genderPreference,
                 "noSmokingPreference" to cbNoSmokingProfile.isChecked,
                 "noPetsPreference" to cbNoPetsProfile.isChecked,
-                "musicPreference" to cbMusicProfile.isChecked
+                "musicPreference" to cbMusicProfile.isChecked,
+                "quietRidePreference" to cbQuietRideProfile.isChecked,
+                "hallResident" to etHallResident.text.toString().trim(),
+                "clubMember" to etClubMember.text.toString().trim(),
+                "courseCohort" to etCourseCohort.text.toString().trim()
             )
             
             btnSaveProfile.isEnabled = false
@@ -100,6 +136,14 @@ class ProfileFragment : Fragment() {
                     btnSaveProfile.isEnabled = true
                     Toast.makeText(context, "Failed to save: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
+        }
+        
+        btnEmergencyCall.setOnClickListener {
+            // Open dialer with NTU security hotline
+            val intent = Intent(Intent.ACTION_DIAL).apply {
+                data = Uri.parse("tel:${NTULocations.NTU_SECURITY_HOTLINE}")
+            }
+            startActivity(intent)
         }
         
         btnLogout.setOnClickListener {
