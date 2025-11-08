@@ -11,6 +11,7 @@ data class Trip(
     val noSmoking: Boolean = false,
     val noPets: Boolean = false,
     val musicAllowed: Boolean = false,
+    val quietRide: Boolean = false, // New: quiet ride preference
     val additionalNotes: String = "",
     val status: String = "active", // active, completed, cancelled
     val passengers: List<String> = emptyList() // List of passenger UIDs
