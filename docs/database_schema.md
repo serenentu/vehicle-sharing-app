@@ -82,19 +82,9 @@ Stores information about posted trips.
 
 ## Indexes
 
-For optimal query performance, the following Firestore indexes should be created:
+The app performs client-side sorting to avoid the need for composite indexes in Firestore. This makes the app work out-of-the-box without requiring manual index configuration in the Firebase Console.
 
-1. **Trips by Date and Status**:
-   - Collection: `trips`
-   - Fields: `status` (Ascending), `dateTime` (Ascending)
-
-2. **Trips by Driver**:
-   - Collection: `trips`
-   - Fields: `driverUid` (Ascending), `dateTime` (Descending)
-
-3. **Active Trips Search**:
-   - Collection: `trips`
-   - Fields: `status` (Ascending), `origin` (Ascending), `destination` (Ascending)
+**Note**: No composite indexes are required for the current implementation. All queries use simple equality checks (`.whereEqualTo()`) and sorting is performed in the app after data retrieval.
 
 ## Security Rules
 
