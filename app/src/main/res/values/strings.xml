@@ -1,3 +1,31 @@
 <resources>
-    <string name="app_name">Vehicle Sharing App</string>
+    <string name="app_name">RideShare</string>
+    
+    <!-- Welcome Screen -->
+    <string name="welcome_title">RideShare</string>
+    <string name="welcome_subtitle">Your Journey, Shared</string>
+    
+    <!-- Navigation -->
+    <string name="nav_browse">Browse</string>
+    <string name="nav_post_trip">Post Trip</string>
+    <string name="nav_history">History</string>
+    <string name="nav_profile">Profile</string>
+    
+    <!-- Common -->
+    <string name="loading">Loading…</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    
+    <!-- Error Messages -->
+    <string name="error_empty_fields">Please fill in all fields</string>
+    <string name="error_invalid_email">Please enter a valid email</string>
+    <string name="error_password_mismatch">Passwords do not match</string>
+    <string name="error_password_length">Password must be at least 6 characters</string>
+    
+    <!-- Success Messages -->
+    <string name="success_login">Login successful</string>
+    <string name="success_signup">Account created successfully</string>
+    <string name="success_trip_posted">Trip posted successfully</string>
+    <string name="success_profile_saved">Preferences saved successfully</string>
 </resources>
