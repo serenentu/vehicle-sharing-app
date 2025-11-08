@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">RideShare</string>
+    <string name="app_name">Carma</string>
     
     <!-- Welcome Screen -->
-    <string name="welcome_title">RideShare</string>
-    <string name="welcome_subtitle">Your Journey, Shared</string>
+    <string name="welcome_title">Carma</string>
+    <string name="welcome_subtitle">Good Rides, Good Karma ✨</string>
     
     <!-- Navigation -->
     <string name="nav_browse">Browse</string>
