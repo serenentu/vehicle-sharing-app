@@ -45,6 +45,7 @@ class PostTripFragment : Fragment() {
         val cbQuietRide = view.findViewById<CheckBox>(R.id.cbQuietRide)
         val etAdditionalNotes = view.findViewById<EditText>(R.id.etAdditionalNotes)
         val btnPostTrip = view.findViewById<Button>(R.id.btnPostTrip)
+        val tvCommonRoutes = view.findViewById<TextView>(R.id.tvCommonRoutes)
         
         // Setup location autocomplete
         val locationAdapter = ArrayAdapter(
@@ -54,6 +55,9 @@ class PostTripFragment : Fragment() {
         )
         etOrigin.setAdapter(locationAdapter)
         etDestination.setAdapter(locationAdapter)
+        
+        // Update common routes based on time
+        updateCommonRoutes(tvCommonRoutes)
         
         // Date and time picker
         etDateTime.setOnClickListener {
@@ -177,5 +181,39 @@ class PostTripFragment : Fragment() {
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
         ).show()
+    }
+    
+    private fun updateCommonRoutes(textView: TextView) {
+        val calendar = Calendar.getInstance()
+        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        
+        // Determine time period
+        val timePeriod = when {
+            dayOfWeek == Calendar.FRIDAY && hour >= 17 -> "Friday Evening"
+            dayOfWeek == Calendar.SATURDAY -> "Saturday"
+            dayOfWeek == Calendar.SUNDAY -> "Sunday"
+            hour in 6..9 -> "Morning"
+            hour in 17..20 -> "Evening"
+            else -> "Any time"
+        }
+        
+        // Get relevant routes
+        val relevantRoutes = NTULocations.COMMON_ROUTES.filter { route ->
+            route.suggestedTimes.any { time ->
+                time.contains(timePeriod, ignoreCase = true) || 
+                (dayOfWeek == Calendar.SATURDAY && time.contains("Weekend", ignoreCase = true)) ||
+                (dayOfWeek == Calendar.SUNDAY && time.contains("Weekend", ignoreCase = true))
+            }
+        }.take(4)
+        
+        if (relevantRoutes.isNotEmpty()) {
+            val routeText = relevantRoutes.joinToString(" • ") { 
+                "${it.origin} → ${it.destination}" 
+            }
+            textView.text = "Popular for $timePeriod: $routeText"
+        } else {
+            textView.text = "NTU → Tampines • NTU → Airport • NTU → Orchard • NTU → Jurong East"
+        }
     }
 }

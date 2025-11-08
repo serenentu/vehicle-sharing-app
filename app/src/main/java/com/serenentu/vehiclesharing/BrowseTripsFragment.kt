@@ -154,6 +154,7 @@ class BrowseTripsFragment : Fragment() {
         
         inner class TripViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val tvDriverName: TextView = itemView.findViewById(R.id.tvDriverName)
+            val tvDriverBadges: TextView = itemView.findViewById(R.id.tvDriverBadges)
             val tvDateTime: TextView = itemView.findViewById(R.id.tvDateTime)
             val tvSeats: TextView = itemView.findViewById(R.id.tvSeats)
             val tvOrigin: TextView = itemView.findViewById(R.id.tvOrigin)
@@ -180,6 +181,41 @@ class BrowseTripsFragment : Fragment() {
             holder.tvSeats.text = "${trip.seatsAvailable} seat${if (trip.seatsAvailable != 1) "s" else ""}"
             holder.tvOrigin.text = trip.origin
             holder.tvDestination.text = trip.destination
+            
+            // Load driver badges from Firestore
+            firestore.collection("users")
+                .document(trip.driverUid)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        val badges = mutableListOf<String>()
+                        
+                        val hall = document.getString("hallResident")
+                        if (!hall.isNullOrEmpty()) {
+                            badges.add("🏠 $hall")
+                        }
+                        
+                        val club = document.getString("clubMember")
+                        if (!club.isNullOrEmpty()) {
+                            badges.add("👥 $club")
+                        }
+                        
+                        val cohort = document.getString("courseCohort")
+                        if (!cohort.isNullOrEmpty()) {
+                            badges.add("🎓 $cohort")
+                        }
+                        
+                        if (badges.isNotEmpty()) {
+                            holder.tvDriverBadges.text = badges.joinToString(" • ")
+                            holder.tvDriverBadges.visibility = View.VISIBLE
+                        } else {
+                            holder.tvDriverBadges.visibility = View.GONE
+                        }
+                    }
+                }
+                .addOnFailureListener {
+                    holder.tvDriverBadges.visibility = View.GONE
+                }
             
             // Show/hide preference chips
             holder.tvNoSmoking.visibility = if (trip.noSmoking) View.VISIBLE else View.GONE

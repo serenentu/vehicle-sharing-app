@@ -62,7 +62,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Email"
+            android:hint="NTU Student Email"
+            app:helperText="Must use @e.ntu.edu.sg email"
+            app:helperTextTextColor="@color/text_secondary"
             app:startIconDrawable="@android:drawable/ic_dialog_email"
             app:startIconTint="@color/primary"
             app:layout_constraintTop_toBottomOf="@id/tilFullName">
