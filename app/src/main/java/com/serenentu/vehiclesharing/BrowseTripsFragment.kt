@@ -148,12 +148,19 @@ class BrowseTripsFragment : Fragment() {
         RecyclerView.Adapter<TripsAdapter.TripViewHolder>() {
         
         inner class TripViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val tvTripInfo: TextView = itemView.findViewById(android.R.id.text1)
+            val tvDriverName: TextView = itemView.findViewById(R.id.tvDriverName)
+            val tvDateTime: TextView = itemView.findViewById(R.id.tvDateTime)
+            val tvSeats: TextView = itemView.findViewById(R.id.tvSeats)
+            val tvOrigin: TextView = itemView.findViewById(R.id.tvOrigin)
+            val tvDestination: TextView = itemView.findViewById(R.id.tvDestination)
+            val tvNoSmoking: TextView = itemView.findViewById(R.id.tvNoSmoking)
+            val tvNoPets: TextView = itemView.findViewById(R.id.tvNoPets)
+            val tvMusic: TextView = itemView.findViewById(R.id.tvMusic)
         }
         
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TripViewHolder {
             val view = LayoutInflater.from(parent.context)
-                .inflate(android.R.layout.simple_list_item_1, parent, false)
+                .inflate(R.layout.item_trip, parent, false)
             return TripViewHolder(view)
         }
         
@@ -162,22 +169,16 @@ class BrowseTripsFragment : Fragment() {
             val dateFormat = SimpleDateFormat("MMM dd, hh:mm a", Locale.getDefault())
             val dateStr = dateFormat.format(Date(trip.dateTime))
             
-            val preferences = mutableListOf<String>()
-            if (trip.noSmoking) preferences.add("No Smoking")
-            if (trip.noPets) preferences.add("No Pets")
-            if (trip.musicAllowed) preferences.add("Music OK")
+            holder.tvDriverName.text = trip.driverName
+            holder.tvDateTime.text = dateStr
+            holder.tvSeats.text = "${trip.seatsAvailable} seat${if (trip.seatsAvailable != 1) "s" else ""}"
+            holder.tvOrigin.text = trip.origin
+            holder.tvDestination.text = trip.destination
             
-            val prefStr = if (preferences.isNotEmpty()) {
-                "\n${preferences.joinToString(", ")}"
-            } else {
-                ""
-            }
-            
-            holder.tvTripInfo.text = """
-                ${trip.origin} → ${trip.destination}
-                ${trip.driverName} • $dateStr
-                ${trip.seatsAvailable} seat(s) available$prefStr
-            """.trimIndent()
+            // Show/hide preference chips
+            holder.tvNoSmoking.visibility = if (trip.noSmoking) View.VISIBLE else View.GONE
+            holder.tvNoPets.visibility = if (trip.noPets) View.VISIBLE else View.GONE
+            holder.tvMusic.visibility = if (trip.musicAllowed) View.VISIBLE else View.GONE
         }
         
         override fun getItemCount() = trips.size

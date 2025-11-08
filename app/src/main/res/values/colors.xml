@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Brand Colors - Modern ride-sharing theme -->
+    <color name="primary">#2563EB</color>
+    <color name="primary_dark">#1E40AF</color>
+    <color name="primary_light">#60A5FA</color>
+    
+    <!-- Secondary/Accent Colors -->
+    <color name="accent">#10B981</color>
+    <color name="accent_dark">#059669</color>
+    <color name="accent_light">#34D399</color>
+    
+    <!-- Background Colors -->
+    <color name="background">#F9FAFB</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="card_background">#FFFFFF</color>
+    
+    <!-- Text Colors -->
+    <color name="text_primary">#111827</color>
+    <color name="text_secondary">#6B7280</color>
+    <color name="text_hint">#9CA3AF</color>
+    <color name="text_white">#FFFFFF</color>
+    
+    <!-- Status Colors -->
+    <color name="success">#10B981</color>
+    <color name="warning">#F59E0B</color>
+    <color name="error">#EF4444</color>
+    <color name="info">#3B82F6</color>
+    
+    <!-- UI Element Colors -->
+    <color name="divider">#E5E7EB</color>
+    <color name="ripple">#1A2563EB</color>
+    <color name="disabled">#D1D5DB</color>
+    <color name="overlay">#80000000</color>
+    
+    <!-- Feature Colors -->
+    <color name="no_smoking">#EF4444</color>
+    <color name="no_pets">#F59E0B</color>
+    <color name="music_allowed">#8B5CF6</color>
+    
+    <!-- Gradient Colors -->
+    <color name="gradient_start">#2563EB</color>
+    <color name="gradient_end">#7C3AED</color>
+    
+    <!-- Material Design defaults -->
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="transparent">#00000000</color>
+</resources>
