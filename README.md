@@ -28,13 +28,34 @@ The Vehicle Sharing App aims to facilitate carpooling and vehicle sharing among 
 5. **Filtering System** - Filter trips based on location and multiple preferences
 6. **Firebase Integration** - Real-time data synchronization and storage
 
-### Future Features (Phase 2)
-- Enhanced matching algorithm with route optimization
-- In-app chat and push notifications
-- Ratings and reviews system with NTU etiquette prompts
-- Google Maps integration for route preview
-- Shared route segment highlights
-- Booking system for passenger confirmation
+### 🚀 Phase 2 - Upcoming Features
+
+#### ✅ Functional Requirements
+
+**🔐 User Authentication**
+- [ ] Sign up/login via email or social media
+- [ ] Profile creation with preferences (e.g., gender, music, pets)
+
+**📍 Trip Posting & Browsing**
+- [ ] Post travel plans (origin, destination, time/date)
+- [ ] Browse available rides with filters
+- [ ] View trip history (past, cancelled, completed)
+
+**🤝 Matching & Preferences**
+- [ ] Match users based on location, time, and preferences
+- [ ] Apply filters: gender, smoking, pets, music, quiet ride
+- [ ] Support both short (NTU-based) and long-distance rides
+
+**💬 Communication & Notifications**
+- [ ] In-app messaging or WhatsApp integration (TBC)
+- [ ] Push notifications for ride updates
+
+**⭐ Ratings & Reviews**
+- [ ] Post-ride feedback system for both drivers and riders
+
+**🗺️ Map Integration**
+- [ ] Show route, pickup/drop-off points, estimated time
+- [ ] Use Google Maps API for navigation and display
 
 ## Timeline (Semester 1)
 
