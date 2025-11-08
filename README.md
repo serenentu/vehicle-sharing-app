@@ -1,24 +1,40 @@
-# Vehicle Sharing App – FYP (Part 1, Semester 1)
+# Vehicle Sharing App – NTU Campus Ridesharing
 
-This is the repository for the Vehicle Sharing App developed as a Final Year Project (FYP). The app is built with Android Studio using Kotlin and integrates Firebase for backend services.
+This is the repository for the Vehicle Sharing App developed as a Final Year Project (FYP). The app is built with Android Studio using Kotlin and integrates Firebase for backend services. **Designed specifically for NTU students** to facilitate safe and convenient carpooling within the campus community and across Singapore.
 
 ## Project Overview
 
-The Vehicle Sharing App aims to facilitate carpooling and vehicle sharing among users, connecting drivers with passengers for shared travel. The app emphasizes safety, user preferences, and real-time ride matching.
+The Vehicle Sharing App aims to facilitate carpooling and vehicle sharing among NTU students, connecting drivers with passengers for shared travel. The app emphasizes **campus-aware features, social trust through NTU verification, and flexible trip planning** across Singapore.
 
 ### Key Features
 
-1. **User Authentication** - Email and social media sign-up/login
-2. **Trip Posting & Browsing** - Post and search for available rides
-3. **User Profiles** - Manage preferences (gender, smoking, pets, music)
-4. **Filtering System** - Filter trips based on user preferences
-5. **Firebase Integration** - Real-time data synchronization and storage
+#### 🎓 NTU-Centric Design
+1. **NTU-Only Access** - Restricted to @e.ntu.edu.sg email addresses for enhanced safety
+2. **Campus-Aware Locations** - Preloaded with 50+ NTU hotspots (Halls, Lecture Theatres, Spines, Canteens)
+3. **Profile Badges** - Display hall residence, club membership, and course cohort for social trust
+4. **Emergency Contact** - Quick dial to NTU Security Hotline (6791 1616)
+
+#### 🚗 Smart Ride Matching
+1. **Location Autocomplete** - NTU campus locations + Singapore-wide destinations
+2. **Common Route Suggestions** - Time-based suggestions (e.g., "NTU → Tampines" on Friday evenings)
+3. **Flexible Trip Radius** - Post rides anywhere in Singapore, not just within NTU
+4. **Trip Preferences** - No smoking, no pets, music allowed, quiet ride options
+
+#### 👤 User Features
+1. **User Authentication** - Email authentication with NTU domain validation
+2. **Trip Posting & Browsing** - Post and search for available rides with rich filtering
+3. **User Profiles** - Manage preferences (gender, smoking, pets, music, quiet rides)
+4. **NTU Badges** - Showcase your hall, clubs, and course to build familiarity
+5. **Filtering System** - Filter trips based on location and multiple preferences
+6. **Firebase Integration** - Real-time data synchronization and storage
 
 ### Future Features (Phase 2)
-- Matching algorithm based on location and time
-- In-app chat and notifications
-- Ratings and reviews system
-- Google Maps integration
+- Enhanced matching algorithm with route optimization
+- In-app chat and push notifications
+- Ratings and reviews system with NTU etiquette prompts
+- Google Maps integration for route preview
+- Shared route segment highlights
+- Booking system for passenger confirmation
 
 ## Timeline (Semester 1)
 
