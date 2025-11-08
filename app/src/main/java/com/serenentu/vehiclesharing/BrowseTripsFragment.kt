@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.serenentu.vehiclesharing.data.model.Trip
 import java.text.SimpleDateFormat
 import java.util.*
@@ -87,13 +86,9 @@ class BrowseTripsFragment : Fragment() {
         noPets: Boolean = false,
         musicAllowed: Boolean = false
     ) {
-        var query: Query = firestore.collection("trips")
+        firestore.collection("trips")
             .whereEqualTo("status", "active")
-            .orderBy("dateTime", Query.Direction.ASCENDING)
-        
-        // Note: Firestore has limitations on compound queries
-        // For more complex filtering, we'll filter in memory
-        query.get()
+            .get()
             .addOnSuccessListener { documents ->
                 trips.clear()
                 
@@ -127,6 +122,9 @@ class BrowseTripsFragment : Fragment() {
                         trips.add(trip)
                     }
                 }
+                
+                // Sort trips by dateTime in ascending order (soonest first)
+                trips.sortBy { it.dateTime }
                 
                 tripsAdapter.notifyDataSetChanged()
                 

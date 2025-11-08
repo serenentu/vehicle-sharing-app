@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.serenentu.vehiclesharing.data.model.Trip
 import java.text.SimpleDateFormat
 import java.util.*
@@ -54,7 +53,6 @@ class HistoryFragment : Fragment() {
     private fun loadUserTrips(userId: String) {
         firestore.collection("trips")
             .whereEqualTo("driverUid", userId)
-            .orderBy("dateTime", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { documents ->
                 trips.clear()
@@ -62,6 +60,9 @@ class HistoryFragment : Fragment() {
                     val trip = document.toObject(Trip::class.java)
                     trips.add(trip)
                 }
+                
+                // Sort trips by dateTime in descending order (newest first)
+                trips.sortByDescending { it.dateTime }
                 
                 // Display trips in the TextView for now
                 val tvTripList = view?.findViewById<TextView>(android.R.id.text1)
