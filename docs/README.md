@@ -28,23 +28,17 @@ This directory contains comprehensive documentation for the NTU Vehicle Sharing 
 
 ## 🎯 Recent Updates
 
-### Browse Feature Fix (Latest)
-The Browse Trips feature had a critical crash bug that has been fixed. See:
-- **[APP_USER_FLOW.md](APP_USER_FLOW.md)** - Section on "Browse Trips Screen (THE FIXED FEATURE)"
-- **[BROWSE_FEATURE_VISUAL_GUIDE.md](BROWSE_FEATURE_VISUAL_GUIDE.md)** - Complete visual walkthrough
-- **[../FIX_SUMMARY.md](../FIX_SUMMARY.md)** - Executive summary of the fix
+### Browse Feature
+The Browse Trips feature allows students to discover and book rides. See:
+- **[APP_USER_FLOW.md](APP_USER_FLOW.md)** - Complete walkthrough including Browse functionality
+- **[BROWSE_FEATURE_VISUAL_GUIDE.md](BROWSE_FEATURE_VISUAL_GUIDE.md)** - Detailed visual guide
 
-**What was fixed:**
-- ❌ App crashed when clicking Browse
-- ❌ 1,000+ redundant Firebase calls
-- ❌ Memory leaks
-- ❌ No error handling
-
-**What works now:**
-- ✅ Stable Browse feature
-- ✅ 95% reduction in Firebase calls
-- ✅ No crashes or memory leaks
-- ✅ 60 FPS smooth scrolling
+**Key Features:**
+- ✅ View all available trips
+- ✅ Filter by location and preferences
+- ✅ See driver badges (hall, club, course)
+- ✅ Book rides with checkout process
+- ✅ Real-time seat availability
 
 ## 📱 App Features Overview
 
@@ -132,7 +126,7 @@ The Browse Trips feature had a critical crash bug that has been fixed. See:
 For issues or questions:
 - Check the relevant documentation above
 - Review [troubleshooting section in README](../README.md#troubleshooting)
-- Check [../FIX_SUMMARY.md](../FIX_SUMMARY.md) for recent fixes
+- See [FIRESTORE_RULES_DEPLOYMENT.md](FIRESTORE_RULES_DEPLOYMENT.md) for Firebase setup issues
 
 ## 📝 Contributing
 
