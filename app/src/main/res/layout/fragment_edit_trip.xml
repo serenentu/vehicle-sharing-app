@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/background">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Header -->
+        <TextView
+            android:id="@+id/tvHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit Trip"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tvSubheader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Update your trip details"
+            android:textSize="14sp"
+            android:textColor="@color/text_secondary"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintTop_toBottomOf="@id/tvHeader"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Trip Details Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardTripDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:layout_constraintTop_toBottomOf="@id/tvSubheader">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📍 Trip Details"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- Origin Input -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilOrigin"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Starting Point"
+                    android:layout_marginBottom="12dp"
+                    app:startIconDrawable="@drawable/ic_location"
+                    app:startIconTint="@color/accent">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/etOrigin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textSize="16sp"
+                        android:completionThreshold="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Destination Input -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilDestination"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Destination"
+                    android:layout_marginBottom="12dp"
+                    app:startIconDrawable="@drawable/ic_location"
+                    app:startIconTint="@color/error">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/etDestination"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textSize="16sp"
+                        android:completionThreshold="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Date/Time Input -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilDateTime"
+                    style="@style/Widget.VehicleSharing.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Date and Time"
+                    android:layout_marginBottom="12dp"
+                    app:startIconDrawable="@android:drawable/ic_menu_recent_history"
+                    app:startIconTint="@color/primary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etDateTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:clickable="true"
+                        android:inputType="none"
+                        android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Seats Available Input -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilSeats"
+                    style="@style/Widget.VehicleSharing.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Available Seats"
+                    android:layout_marginBottom="12dp"
+                    app:startIconDrawable="@drawable/ic_profile"
+                    app:startIconTint="@color/primary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etSeatsAvailable"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Price Per Seat Input -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilPrice"
+                    style="@style/Widget.VehicleSharing.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Price Per Seat (SGD)"
+                    app:prefixText="$"
+                    app:startIconDrawable="@android:drawable/ic_menu_info_details"
+                    app:startIconTint="@color/accent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPricePerSeat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Preferences Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardPreferences"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:layout_constraintTop_toBottomOf="@id/cardTripDetails">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="⚙️ Trip Preferences"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginBottom="12dp" />
+
+                <CheckBox
+                    android:id="@+id/cbNoSmoking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🚭 No Smoking"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginBottom="8dp" />
+
+                <CheckBox
+                    android:id="@+id/cbNoPets"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🐾 No Pets"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginBottom="8dp" />
+
+                <CheckBox
+                    android:id="@+id/cbMusicAllowed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🎵 Music Allowed"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginBottom="8dp" />
+
+                <CheckBox
+                    android:id="@+id/cbQuietRide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🤫 Quiet Ride"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_primary" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Additional Notes Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardNotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:layout_constraintTop_toBottomOf="@id/cardPreferences">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📝 Additional Notes"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginBottom="12dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilNotes"
+                    style="@style/Widget.VehicleSharing.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Any special instructions or notes...">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etAdditionalNotes"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:gravity="top"
+                        android:inputType="textMultiLine"
+                        android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Save Changes Button -->
+        <Button
+            android:id="@+id/btnSaveTrip"
+            style="@style/Widget.VehicleSharing.Button"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="💾 Save Changes"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintTop_toBottomOf="@id/cardNotes"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

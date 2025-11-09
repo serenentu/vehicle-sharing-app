@@ -11,9 +11,9 @@ import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.serenentu.vehiclesharing.data.NTULocations
@@ -21,20 +21,30 @@ import com.serenentu.vehiclesharing.data.model.Trip
 import java.text.SimpleDateFormat
 import java.util.*
 
-class PostTripFragment : Fragment() {
+class EditTripFragment : Fragment() {
     
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
     private var selectedDateTime: Long? = null
+    private var tripId: String? = null
     
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_post_trip, container, false)
+        val view = inflater.inflate(R.layout.fragment_edit_trip, container, false)
         
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
+        
+        // Get trip ID from arguments
+        tripId = arguments?.getString("tripId")
+        
+        if (tripId == null) {
+            Toast.makeText(context, "Error: Trip not found", Toast.LENGTH_SHORT).show()
+            findNavController().navigateUp()
+            return view
+        }
         
         val etOrigin = view.findViewById<AutoCompleteTextView>(R.id.etOrigin)
         val etDestination = view.findViewById<AutoCompleteTextView>(R.id.etDestination)
@@ -46,8 +56,7 @@ class PostTripFragment : Fragment() {
         val cbMusicAllowed = view.findViewById<CheckBox>(R.id.cbMusicAllowed)
         val cbQuietRide = view.findViewById<CheckBox>(R.id.cbQuietRide)
         val etAdditionalNotes = view.findViewById<EditText>(R.id.etAdditionalNotes)
-        val btnPostTrip = view.findViewById<Button>(R.id.btnPostTrip)
-        val tvCommonRoutes = view.findViewById<TextView>(R.id.tvCommonRoutes)
+        val btnSaveTrip = view.findViewById<Button>(R.id.btnSaveTrip)
         
         // Setup location autocomplete
         val locationAdapter = ArrayAdapter(
@@ -58,18 +67,21 @@ class PostTripFragment : Fragment() {
         etOrigin.setAdapter(locationAdapter)
         etDestination.setAdapter(locationAdapter)
         
-        // Update common routes based on time
-        updateCommonRoutes(tvCommonRoutes)
+        // Load trip data
+        loadTripData(
+            etOrigin, etDestination, etDateTime, etSeatsAvailable, etPricePerSeat,
+            cbNoSmoking, cbNoPets, cbMusicAllowed, cbQuietRide, etAdditionalNotes
+        )
         
         // Date and time picker
         etDateTime.setOnClickListener {
             showDateTimePicker(etDateTime)
         }
         
-        btnPostTrip.setOnClickListener {
+        btnSaveTrip.setOnClickListener {
             val currentUser = auth.currentUser
             if (currentUser == null) {
-                Toast.makeText(context, "Please login to post a trip", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Please login to edit trip", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             
@@ -102,74 +114,92 @@ class PostTripFragment : Fragment() {
                 return@setOnClickListener
             }
             
-            btnPostTrip.isEnabled = false
+            btnSaveTrip.isEnabled = false
             
-            // Get user name from Firestore
-            firestore.collection("users")
-                .document(currentUser.uid)
-                .get()
-                .addOnSuccessListener { document ->
-                    val userName = document.getString("fullName") ?: "Unknown"
-                    
-                    // Create trip object
-                    val tripId = firestore.collection("trips").document().id
-                    val trip = Trip(
-                        tripId = tripId,
-                        driverUid = currentUser.uid,
-                        driverName = userName,
-                        origin = origin,
-                        destination = destination,
-                        dateTime = selectedDateTime!!,
-                        seatsAvailable = seats,
-                        pricePerSeat = price,
-                        noSmoking = cbNoSmoking.isChecked,
-                        noPets = cbNoPets.isChecked,
-                        musicAllowed = cbMusicAllowed.isChecked,
-                        quietRide = cbQuietRide.isChecked,
-                        additionalNotes = additionalNotes,
-                        status = "active"
-                    )
-                    
-                    // Save to Firestore
-                    firestore.collection("trips")
-                        .document(tripId)
-                        .set(trip)
-                        .addOnSuccessListener {
-                            Toast.makeText(context, "Trip posted successfully", Toast.LENGTH_SHORT).show()
-                            // Clear form
-                            etOrigin.text.clear()
-                            etDestination.text.clear()
-                            etDateTime.text.clear()
-                            etSeatsAvailable.text.clear()
-                            etPricePerSeat.text.clear()
-                            etAdditionalNotes.text.clear()
-                            cbNoSmoking.isChecked = false
-                            cbNoPets.isChecked = false
-                            cbMusicAllowed.isChecked = false
-                            cbQuietRide.isChecked = false
-                            selectedDateTime = null
-                            btnPostTrip.isEnabled = true
-                        }
-                        .addOnFailureListener { e ->
-                            btnPostTrip.isEnabled = true
-                            Toast.makeText(
-                                context,
-                                "Failed to post trip: ${e.message}",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
+            // Update trip in Firestore
+            val updates = hashMapOf<String, Any>(
+                "origin" to origin,
+                "destination" to destination,
+                "dateTime" to selectedDateTime!!,
+                "seatsAvailable" to seats,
+                "pricePerSeat" to price,
+                "noSmoking" to cbNoSmoking.isChecked,
+                "noPets" to cbNoPets.isChecked,
+                "musicAllowed" to cbMusicAllowed.isChecked,
+                "quietRide" to cbQuietRide.isChecked,
+                "additionalNotes" to additionalNotes
+            )
+            
+            firestore.collection("trips")
+                .document(tripId!!)
+                .update(updates)
+                .addOnSuccessListener {
+                    Toast.makeText(context, "Trip updated successfully", Toast.LENGTH_SHORT).show()
+                    findNavController().navigateUp()
                 }
                 .addOnFailureListener { e ->
-                    btnPostTrip.isEnabled = true
-                    Toast.makeText(context, "Failed to get user info: ${e.message}", Toast.LENGTH_SHORT).show()
+                    btnSaveTrip.isEnabled = true
+                    Toast.makeText(
+                        context,
+                        "Failed to update trip: ${e.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
         }
         
         return view
     }
     
+    private fun loadTripData(
+        etOrigin: AutoCompleteTextView,
+        etDestination: AutoCompleteTextView,
+        etDateTime: EditText,
+        etSeatsAvailable: EditText,
+        etPricePerSeat: EditText,
+        cbNoSmoking: CheckBox,
+        cbNoPets: CheckBox,
+        cbMusicAllowed: CheckBox,
+        cbQuietRide: CheckBox,
+        etAdditionalNotes: EditText
+    ) {
+        firestore.collection("trips")
+            .document(tripId!!)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val trip = document.toObject(Trip::class.java)
+                    if (trip != null) {
+                        etOrigin.setText(trip.origin)
+                        etDestination.setText(trip.destination)
+                        etSeatsAvailable.setText(trip.seatsAvailable.toString())
+                        etPricePerSeat.setText(trip.pricePerSeat.toString())
+                        cbNoSmoking.isChecked = trip.noSmoking
+                        cbNoPets.isChecked = trip.noPets
+                        cbMusicAllowed.isChecked = trip.musicAllowed
+                        cbQuietRide.isChecked = trip.quietRide
+                        etAdditionalNotes.setText(trip.additionalNotes)
+                        
+                        // Set date time
+                        selectedDateTime = trip.dateTime
+                        val dateFormat = SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault())
+                        etDateTime.setText(dateFormat.format(Date(trip.dateTime)))
+                    }
+                } else {
+                    Toast.makeText(context, "Trip not found", Toast.LENGTH_SHORT).show()
+                    findNavController().navigateUp()
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(context, "Failed to load trip: ${e.message}", Toast.LENGTH_SHORT).show()
+                findNavController().navigateUp()
+            }
+    }
+    
     private fun showDateTimePicker(editText: EditText) {
         val calendar = Calendar.getInstance()
+        if (selectedDateTime != null) {
+            calendar.timeInMillis = selectedDateTime!!
+        }
         
         DatePickerDialog(
             requireContext(),
@@ -192,39 +222,5 @@ class PostTripFragment : Fragment() {
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
         ).show()
-    }
-    
-    private fun updateCommonRoutes(textView: TextView) {
-        val calendar = Calendar.getInstance()
-        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-        val hour = calendar.get(Calendar.HOUR_OF_DAY)
-        
-        // Determine time period
-        val timePeriod = when {
-            dayOfWeek == Calendar.FRIDAY && hour >= 17 -> "Friday Evening"
-            dayOfWeek == Calendar.SATURDAY -> "Saturday"
-            dayOfWeek == Calendar.SUNDAY -> "Sunday"
-            hour in 6..9 -> "Morning"
-            hour in 17..20 -> "Evening"
-            else -> "Any time"
-        }
-        
-        // Get relevant routes
-        val relevantRoutes = NTULocations.COMMON_ROUTES.filter { route ->
-            route.suggestedTimes.any { time ->
-                time.contains(timePeriod, ignoreCase = true) || 
-                (dayOfWeek == Calendar.SATURDAY && time.contains("Weekend", ignoreCase = true)) ||
-                (dayOfWeek == Calendar.SUNDAY && time.contains("Weekend", ignoreCase = true))
-            }
-        }.take(4)
-        
-        if (relevantRoutes.isNotEmpty()) {
-            val routeText = relevantRoutes.joinToString(" • ") { 
-                "${it.origin} → ${it.destination}" 
-            }
-            textView.text = "Popular for $timePeriod: $routeText"
-        } else {
-            textView.text = "NTU → Tampines • NTU → Airport • NTU → Orchard • NTU → Jurong East"
-        }
     }
 }

@@ -4,14 +4,17 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android:view.ViewGroup
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.serenentu.vehiclesharing.data.model.Trip
@@ -127,6 +130,9 @@ class HistoryFragment : Fragment() {
         val tvDialogPrice = dialogView.findViewById<TextView>(R.id.tvDialogPrice)
         val tvDialogStatus = dialogView.findViewById<TextView>(R.id.tvDialogStatus)
         val tvDialogNotes = dialogView.findViewById<TextView>(R.id.tvDialogNotes)
+        val cardBookings = dialogView.findViewById<MaterialCardView>(R.id.cardBookings)
+        val tvBookingInfo = dialogView.findViewById<TextView>(R.id.tvBookingInfo)
+        val tvPassengersList = dialogView.findViewById<TextView>(R.id.tvPassengersList)
         val btnEdit = dialogView.findViewById<Button>(R.id.btnEdit)
         val btnDelete = dialogView.findViewById<Button>(R.id.btnDelete)
         val btnClose = dialogView.findViewById<Button>(R.id.btnClose)
@@ -142,6 +148,9 @@ class HistoryFragment : Fragment() {
         tvDialogStatus.text = trip.status.capitalize()
         tvDialogNotes.text = if (trip.additionalNotes.isEmpty()) "No notes" else trip.additionalNotes
         
+        // Load and display booking information
+        loadBookingInfo(trip.tripId, cardBookings, tvBookingInfo, tvPassengersList)
+        
         val dialog = AlertDialog.Builder(requireContext())
             .setTitle("Trip Details")
             .setView(dialogView)
@@ -149,8 +158,9 @@ class HistoryFragment : Fragment() {
         
         btnEdit.setOnClickListener {
             dialog.dismiss()
-            // Navigate to edit (for now, just toast)
-            Toast.makeText(context, "Edit functionality coming soon", Toast.LENGTH_SHORT).show()
+            // Navigate to EditTripFragment
+            val bundle = bundleOf("tripId" to trip.tripId)
+            findNavController().navigate(R.id.action_historyFragment_to_editTripFragment, bundle)
         }
         
         btnDelete.setOnClickListener {
@@ -162,6 +172,34 @@ class HistoryFragment : Fragment() {
         }
         
         dialog.show()
+    }
+    
+    private fun loadBookingInfo(tripId: String, cardBookings: MaterialCardView, tvBookingInfo: TextView, tvPassengersList: TextView) {
+        firestore.collection("bookings")
+            .whereEqualTo("tripId", tripId)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (documents.isEmpty) {
+                    cardBookings.visibility = View.GONE
+                } else {
+                    cardBookings.visibility = View.VISIBLE
+                    val bookingCount = documents.size()
+                    val passengers = documents.mapNotNull { it.getString("passengerName") }
+                    
+                    tvBookingInfo.text = "$bookingCount booking${if (bookingCount != 1) "s" else ""}"
+                    
+                    if (passengers.isNotEmpty()) {
+                        tvPassengersList.text = "Passengers:\n• ${passengers.joinToString("\n• ")}"
+                        tvPassengersList.visibility = View.VISIBLE
+                    } else {
+                        tvPassengersList.visibility = View.GONE
+                    }
+                }
+            }
+            .addOnFailureListener {
+                // Silently fail - bookings are optional information
+                cardBookings.visibility = View.GONE
+            }
     }
     
     private fun showDeleteConfirmation(trip: Trip, parentDialog: AlertDialog) {
