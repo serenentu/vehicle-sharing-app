@@ -77,7 +77,11 @@ The Vehicle Sharing App aims to facilitate carpooling and vehicle sharing among 
    - (Optional) Enable Google Sign-In
 7. Create a Firestore Database:
    - Start in test mode for development
-   - Later, implement the security rules from `docs/database_schema.md`
+8. **Deploy Firestore Security Rules (REQUIRED for booking functionality)**:
+   - Go to Firestore Database → Rules
+   - Copy the security rules from `docs/database_schema.md` 
+   - Paste them and click "Publish"
+   - See [Firestore Rules Deployment Guide](docs/FIRESTORE_RULES_DEPLOYMENT.md) for detailed instructions
 
 ### Project Setup
 
@@ -177,19 +181,25 @@ See the `/docs` folder for detailed project documentation:
 
 ### Common Issues
 
-1. **Build fails with Firebase error**
+1. **"Failed to create booking: permission denied" error**
+   - This occurs when Firestore security rules haven't been deployed
+   - **Quick Fix**: See [Firestore Rules Deployment Guide](docs/FIRESTORE_RULES_DEPLOYMENT.md)
+   - The app requires security rules for the `bookings` collection
+   - Go to Firebase Console → Firestore Database → Rules and update them
+
+2. **Build fails with Firebase error**
    - Ensure `google-services.json` is properly configured
    - Check that Firebase project package name matches app package name
 
-2. **Navigation doesn't work**
+3. **Navigation doesn't work**
    - Verify all fragments are registered in `nav_graph.xml`
    - Check that fragment IDs match between navigation and menu files
 
-3. **Bottom navigation not showing**
+4. **Bottom navigation not showing**
    - Check MainActivity's navigation setup
    - Verify bottom navigation visibility logic
 
-4. **Gradle version compatibility**
+5. **Gradle version compatibility**
    - The project now uses Gradle 8.2.1 and Android Gradle Plugin 8.1.0
    - These versions are fully compatible and resolve the deprecated `module()` API issue
    - Always use the included Gradle Wrapper (`./gradlew`) for consistent builds
