@@ -169,6 +169,13 @@ class EditTripFragment : Fragment() {
                 if (document.exists()) {
                     val trip = document.toObject(Trip::class.java)
                     if (trip != null) {
+                        // Verify ownership - only trip owner can edit
+                        if (trip.driverUid != auth.currentUser?.uid) {
+                            Toast.makeText(context, "You don't have permission to edit this trip", Toast.LENGTH_SHORT).show()
+                            findNavController().navigateUp()
+                            return@addOnSuccessListener
+                        }
+                        
                         etOrigin.setText(trip.origin)
                         etDestination.setText(trip.destination)
                         etSeatsAvailable.setText(trip.seatsAvailable.toString())
