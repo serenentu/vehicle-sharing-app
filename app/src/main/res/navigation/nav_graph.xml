@@ -70,6 +70,18 @@
             app:destination="@id/welcomeFragment"
             app:popUpTo="@id/welcomeFragment"
             app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_historyFragment_to_editTripFragment"
+            app:destination="@id/editTripFragment" />
+    </fragment>
+    
+    <fragment
+        android:id="@+id/editTripFragment"
+        android:name="com.serenentu.vehiclesharing.EditTripFragment"
+        android:label="Edit Trip">
+        <argument
+            android:name="tripId"
+            app:argType="string" />
     </fragment>
     
     <fragment
