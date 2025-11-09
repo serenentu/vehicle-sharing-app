@@ -109,6 +109,8 @@
     </style>
 
     <!-- Text Appearance Styles -->
+    <style name="TextAppearance.VehicleSharing" parent="">
+    </style>
     <style name="TextAppearance.VehicleSharing.Headline1">
         <item name="android:textSize">32sp</item>
         <item name="android:textStyle">bold</item>

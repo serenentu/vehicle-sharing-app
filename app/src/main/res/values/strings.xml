@@ -16,7 +16,10 @@
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
-    
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="close">Close</string>
+
     <!-- Error Messages -->
     <string name="error_empty_fields">Please fill in all fields</string>
     <string name="error_invalid_email">Please enter a valid email</string>
@@ -28,4 +31,46 @@
     <string name="success_signup">Account created successfully</string>
     <string name="success_trip_posted">Trip posted successfully</string>
     <string name="success_profile_saved">Preferences saved successfully</string>
+
+    <!-- Dialog Trip Details -->
+    <string name="trip_route">📍 Trip Route</string>
+    <string name="hall_4">Hall 4</string>
+    <string name="down_arrow">↓</string>
+    <string name="tampines_mall">Tampines Mall</string>
+    <string name="date_amp_time">📅 Date &amp; Time</string>
+    <string name="date_time_placeholder">Nov 15, 2024 03:00 PM</string>
+    <string name="seats">💺 Seats</string>
+    <string name="seats_available_placeholder">3 seats available</string>
+    <string name="price">💰 Price</string>
+    <string name="price_placeholder">$5.00 per seat</string>
+    <string name="status">📊 Status</string>
+    <string name="active">Active</string>
+    <string name="notes">📝 Notes</string>
+    <string name="no_notes">No notes</string>
+    <string name="bookings">👥 Bookings</string>
+    <string name="no_bookings_yet">No bookings yet</string>
+
+    <!-- Profile Screen -->
+    <string name="profile_picture">Profile picture</string>
+    <string name="change_profile_picture">Change profile picture</string>
+    <string name="user_name_placeholder">User Name</string>
+    <string name="user_email_placeholder">user@example.com</string>
+    <string name="preferences">⚙️ Preferences</string>
+    <string name="gender_preference">Gender Preference</string>
+    <string name="no_preference">No Preference</string>
+    <string name="same_gender_only">Same Gender Only</string>
+    <string name="ride_preferences">Ride Preferences</string>
+    <string name="prefer_no_smoking">🚭 Prefer No Smoking</string>
+    <string name="prefer_no_pets">🐾 Prefer No Pets</string>
+    <string name="enjoy_music_during_ride">🎵 Enjoy Music During Ride</string>
+    <string name="prefer_quiet_rides">🤫 Prefer Quiet Rides</string>
+    <string name="ntu_profile_badges">🎓 NTU Profile Badges</string>
+    <string name="hall_resident_optional">Hall Resident (Optional)</string>
+    <string name="club_member_optional">Club Member (Optional)</string>
+    <string name="course_year_optional">Course &amp; Year (Optional)</string>
+    <string name="emergency_contact">🚨 Emergency Contact</string>
+    <string name="ntu_security_hotline">NTU Security Hotline: 6791 1616</string>
+    <string name="call_ntu_security">📞 Call NTU Security</string>
+    <string name="save_preferences">💾 Save Preferences</string>
+    <string name="logout">🚪 Logout</string>
 </resources>

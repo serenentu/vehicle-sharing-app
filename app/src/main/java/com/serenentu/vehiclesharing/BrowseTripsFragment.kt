@@ -43,7 +43,7 @@ class BrowseTripsFragment : Fragment() {
         rvTrips = view.findViewById(R.id.rvTrips)
         tvEmptyState = view.findViewById(R.id.tvEmptyState)
         val btnFilter = view.findViewById<Button>(R.id.btnFilter)
-        val filterPanel = view.findViewById<LinearLayout>(R.id.filterPanel)
+        val filterPanel = view.findViewById<View>(R.id.filterPanel)
         val btnApplyFilters = view.findViewById<Button>(R.id.btnApplyFilters)
         val etSearchOrigin = view.findViewById<EditText>(R.id.etSearchOrigin)
         val etSearchDestination = view.findViewById<EditText>(R.id.etSearchDestination)

@@ -75,7 +75,7 @@
             android:textColor="@color/white"
             android:backgroundTint="@android:color/transparent"
             android:strokeColor="@color/white"
-            android:strokeWidth="2dp"
+            android:strokeWidth="2"
             style="@style/Widget.VehicleSharing.Button.Outlined" />
 
     </LinearLayout>

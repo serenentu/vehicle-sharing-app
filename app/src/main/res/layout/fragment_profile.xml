@@ -27,14 +27,15 @@
             android:background="@drawable/bg_circle_primary"
             android:scaleType="centerCrop"
             android:src="@android:drawable/ic_menu_gallery"
-            android:tint="@color/text_white"
+            app:tint="@color/text_white"
             android:padding="24dp"
             android:elevation="4dp"
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:contentDescription="@string/profile_picture" />
 
         <!-- Change Picture Button -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -49,7 +50,8 @@
             android:layout_marginTop="110dp"
             android:elevation="6dp"
             app:layout_constraintStart_toStartOf="@id/ivProfilePicture"
-            app:layout_constraintTop_toTopOf="@id/ivProfilePicture" />
+            app:layout_constraintTop_toTopOf="@id/ivProfilePicture"
+            android:contentDescription="@string/change_profile_picture" />
 
         <!-- User Info Card -->
         <com.google.android.material.card.MaterialCardView
@@ -74,7 +76,7 @@
                     android:id="@+id/tvUserName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="User Name"
+                    android:text="@string/user_name_placeholder"
                     android:textSize="24sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
@@ -85,7 +87,7 @@
                     android:id="@+id/tvUserEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="user@example.com"
+                    android:text="@string/user_email_placeholder"
                     android:textSize="14sp"
                     android:textColor="@color/text_secondary"
                     android:layout_gravity="center_horizontal"
@@ -113,7 +115,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="⚙️ Preferences"
+                    android:text="@string/preferences"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
@@ -122,7 +124,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Gender Preference"
+                    android:text="@string/gender_preference"
                     android:textSize="14sp"
                     android:textColor="@color/text_secondary"
                     android:textStyle="bold"
@@ -138,7 +140,7 @@
                         android:id="@+id/rbNoPreference"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="No Preference"
+                        android:text="@string/no_preference"
                         android:textColor="@color/text_primary"
                         android:checked="true" />
 
@@ -146,7 +148,7 @@
                         android:id="@+id/rbSameGender"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Same Gender Only"
+                        android:text="@string/same_gender_only"
                         android:textColor="@color/text_primary" />
                 </RadioGroup>
 
@@ -160,7 +162,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ride Preferences"
+                    android:text="@string/ride_preferences"
                     android:textSize="14sp"
                     android:textColor="@color/text_secondary"
                     android:textStyle="bold"
@@ -170,7 +172,7 @@
                     android:id="@+id/cbNoSmokingProfile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🚭 Prefer No Smoking"
+                    android:text="@string/prefer_no_smoking"
                     android:textSize="16sp"
                     android:textColor="@color/text_primary" />
 
@@ -178,7 +180,7 @@
                     android:id="@+id/cbNoPetsProfile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🐾 Prefer No Pets"
+                    android:text="@string/prefer_no_pets"
                     android:textSize="16sp"
                     android:textColor="@color/text_primary" />
 
@@ -186,7 +188,7 @@
                     android:id="@+id/cbMusicProfile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🎵 Enjoy Music During Ride"
+                    android:text="@string/enjoy_music_during_ride"
                     android:textSize="16sp"
                     android:textColor="@color/text_primary" />
 
@@ -194,7 +196,7 @@
                     android:id="@+id/cbQuietRideProfile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🤫 Prefer Quiet Rides"
+                    android:text="@string/prefer_quiet_rides"
                     android:textSize="16sp"
                     android:textColor="@color/text_primary" />
 
@@ -220,7 +222,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🎓 NTU Profile Badges"
+                    android:text="@string/ntu_profile_badges"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
@@ -231,7 +233,7 @@
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Hall Resident (Optional)"
+                    android:hint="@string/hall_resident_optional"
                     android:layout_marginBottom="12dp">
 
                     <AutoCompleteTextView
@@ -239,6 +241,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="none"
+                        android:hint="@string/hall_resident_optional"
                         android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -247,7 +250,7 @@
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Club Member (Optional)"
+                    android:hint="@string/club_member_optional"
                     android:layout_marginBottom="12dp">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -255,6 +258,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
+                        android:hint="@string/club_member_optional"
                         android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -263,7 +267,7 @@
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Course & Year (Optional)"
+                    android:hint="@string/course_year_optional"
                     android:layout_marginBottom="8dp">
 
                     <AutoCompleteTextView
@@ -271,6 +275,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="none"
+                        android:hint="@string/course_year_optional"
                         android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -297,7 +302,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🚨 Emergency Contact"
+                    android:text="@string/emergency_contact"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
@@ -306,7 +311,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="NTU Security Hotline: 6791 1616"
+                    android:text="@string/ntu_security_hotline"
                     android:textSize="14sp"
                     android:textColor="@color/text_primary"
                     android:layout_marginBottom="8dp" />
@@ -316,7 +321,7 @@
                     style="@style/Widget.VehicleSharing.Button.Outlined"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:text="📞 Call NTU Security"
+                    android:text="@string/call_ntu_security"
                     android:textColor="#FF6F00"
                     android:strokeColor="#FF6F00" />
 
@@ -337,7 +342,7 @@
                 style="@style/Widget.VehicleSharing.Button"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:text="💾 Save Preferences"
+                android:text="@string/save_preferences"
                 android:layout_marginBottom="12dp" />
 
             <Button
@@ -345,7 +350,7 @@
                 style="@style/Widget.VehicleSharing.Button.Outlined"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:text="🚪 Logout"
+                android:text="@string/logout"
                 android:textColor="@color/error"
                 android:strokeColor="@color/error" />
 
