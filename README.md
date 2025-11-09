@@ -23,10 +23,12 @@ The Vehicle Sharing App aims to facilitate carpooling and vehicle sharing among 
 #### 👤 User Features
 1. **User Authentication** - Email authentication with NTU domain validation
 2. **Trip Posting & Browsing** - Post and search for available rides with rich filtering
-3. **User Profiles** - Manage preferences (gender, smoking, pets, music, quiet rides)
-4. **NTU Badges** - Showcase your hall, clubs, and course to build familiarity
-5. **Filtering System** - Filter trips based on location and multiple preferences
-6. **Firebase Integration** - Real-time data synchronization and storage
+3. **Trip Management** - Full edit and delete capabilities for posted trips
+4. **Booking System** - Complete checkout flow with payment method selection
+5. **User Profiles** - Manage preferences (gender, smoking, pets, music, quiet rides)
+6. **NTU Badges** - Showcase your hall, clubs, and course to build familiarity
+7. **Filtering System** - Filter trips based on location and multiple preferences
+8. **Firebase Integration** - Real-time data synchronization and storage
 
 ### Future Features (Phase 2)
 - Enhanced matching algorithm with route optimization
@@ -154,6 +156,8 @@ See the `/docs` folder for detailed project documentation:
 - **[system_architecture.md](docs/system_architecture.md)** - Detailed system architecture
 - **[database_schema.md](docs/database_schema.md)** - Firebase Firestore schema and security rules
 - **[firebase_setup.md](docs/firebase_setup.md)** - Step-by-step Firebase setup guide
+- **[EDIT_TRIP_FEATURE.md](docs/EDIT_TRIP_FEATURE.md)** - Complete guide for trip editing functionality
+- **[CHECKOUT_FEATURE_GUIDE.md](docs/CHECKOUT_FEATURE_GUIDE.md)** - Booking and checkout system guide
 - **[feature_implementation.md](docs/feature_implementation.md)** - Complete feature implementation summary
 
 ## Development Guidelines
