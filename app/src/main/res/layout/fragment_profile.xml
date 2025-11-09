@@ -19,16 +19,37 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Profile Avatar -->
-        <View
-            android:id="@+id/profileAvatar"
+        <ImageView
+            android:id="@+id/ivProfilePicture"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginTop="40dp"
             android:background="@drawable/bg_circle_primary"
+            android:scaleType="centerCrop"
+            android:src="@android:drawable/ic_menu_gallery"
+            android:tint="@color/text_white"
+            android:padding="24dp"
             android:elevation="4dp"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Change Picture Button -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabChangePicture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_camera"
+            app:tint="@color/text_white"
+            app:backgroundTint="@color/accent"
+            app:fabSize="mini"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="110dp"
+            android:elevation="6dp"
+            app:layout_constraintStart_toStartOf="@id/ivProfilePicture"
+            app:layout_constraintTop_toTopOf="@id/ivProfilePicture" />
 
         <!-- User Info Card -->
         <com.google.android.material.card.MaterialCardView

@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/homeFragment"
+        android:icon="@android:drawable/ic_menu_compass"
+        android:title="Home" />
+    <item
         android:id="@+id/browseTripsFragment"
         android:icon="@drawable/ic_search"
         android:title="Browse" />
     <item
         android:id="@+id/postTripFragment"
         android:icon="@drawable/ic_add"
-        android:title="Post Trip" />
+        android:title="Post" />
     <item
         android:id="@+id/historyFragment"
         android:icon="@drawable/ic_history"
-        android:title="History" />
+        android:title="My Trips" />
     <item
         android:id="@+id/profileFragment"
         android:icon="@drawable/ic_profile"

@@ -1,9 +1,12 @@
 package com.serenentu.vehiclesharing
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android:view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -21,6 +24,8 @@ class HistoryFragment : Fragment() {
     private lateinit var firestore: FirebaseFirestore
     private val trips = mutableListOf<Trip>()
     private lateinit var adapter: TripsAdapter
+    private lateinit var rvTrips: RecyclerView
+    private lateinit var tvEmptyState: TextView
     
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,8 +36,15 @@ class HistoryFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
         
-        // For now, we'll reuse the fragment_history.xml but we need to add RecyclerView
-        // Let's check if there's a way to update the layout or use a TextView for now
+        rvTrips = view.findViewById(R.id.rvTrips)
+        tvEmptyState = view.findViewById(R.id.tvEmptyState)
+        
+        adapter = TripsAdapter(trips) { trip ->
+            showTripDetailsDialog(trip)
+        }
+        
+        rvTrips.layoutManager = LinearLayoutManager(context)
+        rvTrips.adapter = adapter
         
         return view
     }
@@ -50,31 +62,54 @@ class HistoryFragment : Fragment() {
         loadUserTrips(currentUser.uid)
     }
     
+    override fun onResume() {
+        super.onResume()
+        // Reload trips when fragment becomes visible
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            loadUserTrips(currentUser.uid)
+        }
+    }
+    
     private fun loadUserTrips(userId: String) {
         firestore.collection("trips")
             .whereEqualTo("driverUid", userId)
             .get()
             .addOnSuccessListener { documents ->
                 trips.clear()
+                val currentTime = System.currentTimeMillis()
+                
                 for (document in documents) {
-                    val trip = document.toObject(Trip::class.java)
-                    trips.add(trip)
+                    try {
+                        val trip = document.toObject(Trip::class.java)
+                        
+                        // Auto-update status to inactive if trip date has passed
+                        if (trip.dateTime < currentTime && trip.status == "active") {
+                            firestore.collection("trips")
+                                .document(trip.tripId)
+                                .update("status", "inactive")
+                            // Update local copy
+                            trips.add(trip.copy(status = "inactive"))
+                        } else {
+                            trips.add(trip)
+                        }
+                    } catch (e: Exception) {
+                        // Skip invalid trip data
+                        continue
+                    }
                 }
                 
                 // Sort trips by dateTime in descending order (newest first)
                 trips.sortByDescending { it.dateTime }
                 
-                // Display trips in the TextView for now
-                val tvTripList = view?.findViewById<TextView>(android.R.id.text1)
+                adapter.notifyDataSetChanged()
+                
                 if (trips.isEmpty()) {
-                    tvTripList?.text = "No trips found. Post your first trip!"
+                    rvTrips.visibility = View.GONE
+                    tvEmptyState.visibility = View.VISIBLE
                 } else {
-                    val dateFormat = SimpleDateFormat("MMM dd, hh:mm a", Locale.getDefault())
-                    val tripTexts = trips.map { trip ->
-                        val dateStr = dateFormat.format(Date(trip.dateTime))
-                        "${trip.origin} → ${trip.destination}\n$dateStr • ${trip.seatsAvailable} seat(s) • ${trip.status}"
-                    }
-                    tvTripList?.text = tripTexts.joinToString("\n\n")
+                    rvTrips.visibility = View.VISIBLE
+                    tvEmptyState.visibility = View.GONE
                 }
             }
             .addOnFailureListener { e ->
@@ -82,29 +117,127 @@ class HistoryFragment : Fragment() {
             }
     }
     
-    inner class TripsAdapter(private val trips: List<Trip>) : 
-        RecyclerView.Adapter<TripsAdapter.TripViewHolder>() {
+    private fun showTripDetailsDialog(trip: Trip) {
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_trip_details, null)
+        
+        val tvDialogOrigin = dialogView.findViewById<TextView>(R.id.tvDialogOrigin)
+        val tvDialogDestination = dialogView.findViewById<TextView>(R.id.tvDialogDestination)
+        val tvDialogDateTime = dialogView.findViewById<TextView>(R.id.tvDialogDateTime)
+        val tvDialogSeats = dialogView.findViewById<TextView>(R.id.tvDialogSeats)
+        val tvDialogPrice = dialogView.findViewById<TextView>(R.id.tvDialogPrice)
+        val tvDialogStatus = dialogView.findViewById<TextView>(R.id.tvDialogStatus)
+        val tvDialogNotes = dialogView.findViewById<TextView>(R.id.tvDialogNotes)
+        val btnEdit = dialogView.findViewById<Button>(R.id.btnEdit)
+        val btnDelete = dialogView.findViewById<Button>(R.id.btnDelete)
+        val btnClose = dialogView.findViewById<Button>(R.id.btnClose)
+        
+        val dateFormat = SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault())
+        val dateStr = if (trip.dateTime > 0) dateFormat.format(Date(trip.dateTime)) else "Date not set"
+        
+        tvDialogOrigin.text = trip.origin
+        tvDialogDestination.text = trip.destination
+        tvDialogDateTime.text = dateStr
+        tvDialogSeats.text = "${trip.seatsAvailable} seats available"
+        tvDialogPrice.text = String.format("$%.2f per seat", trip.pricePerSeat)
+        tvDialogStatus.text = trip.status.capitalize()
+        tvDialogNotes.text = if (trip.additionalNotes.isEmpty()) "No notes" else trip.additionalNotes
+        
+        val dialog = AlertDialog.Builder(requireContext())
+            .setTitle("Trip Details")
+            .setView(dialogView)
+            .create()
+        
+        btnEdit.setOnClickListener {
+            dialog.dismiss()
+            // Navigate to edit (for now, just toast)
+            Toast.makeText(context, "Edit functionality coming soon", Toast.LENGTH_SHORT).show()
+        }
+        
+        btnDelete.setOnClickListener {
+            showDeleteConfirmation(trip, dialog)
+        }
+        
+        btnClose.setOnClickListener {
+            dialog.dismiss()
+        }
+        
+        dialog.show()
+    }
+    
+    private fun showDeleteConfirmation(trip: Trip, parentDialog: AlertDialog) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Delete Trip")
+            .setMessage("Are you sure you want to delete this trip?")
+            .setPositiveButton("Delete") { _, _ ->
+                deleteTrip(trip, parentDialog)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+    
+    private fun deleteTrip(trip: Trip, dialog: AlertDialog) {
+        firestore.collection("trips")
+            .document(trip.tripId)
+            .delete()
+            .addOnSuccessListener {
+                Toast.makeText(context, "Trip deleted successfully", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+                // Reload trips
+                val currentUser = auth.currentUser
+                if (currentUser != null) {
+                    loadUserTrips(currentUser.uid)
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(context, "Failed to delete trip: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+    
+    inner class TripsAdapter(
+        private val trips: List<Trip>,
+        private val onItemClick: (Trip) -> Unit
+    ) : RecyclerView.Adapter<TripsAdapter.TripViewHolder>() {
         
         inner class TripViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val tvTripInfo: TextView = itemView.findViewById(android.R.id.text1)
+            val tvDateTime: TextView = itemView.findViewById(R.id.tvDateTime)
+            val tvOrigin: TextView = itemView.findViewById(R.id.tvOrigin)
+            val tvDestination: TextView = itemView.findViewById(R.id.tvDestination)
+            val tvTripDetails: TextView = itemView.findViewById(R.id.tvTripDetails)
+            val tvStatus: TextView = itemView.findViewById(R.id.tvStatus)
         }
         
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TripViewHolder {
             val view = LayoutInflater.from(parent.context)
-                .inflate(android.R.layout.simple_list_item_1, parent, false)
+                .inflate(R.layout.item_history_trip, parent, false)
             return TripViewHolder(view)
         }
         
         override fun onBindViewHolder(holder: TripViewHolder, position: Int) {
             val trip = trips[position]
             val dateFormat = SimpleDateFormat("MMM dd, hh:mm a", Locale.getDefault())
-            val dateStr = dateFormat.format(Date(trip.dateTime))
+            val dateStr = if (trip.dateTime > 0) dateFormat.format(Date(trip.dateTime)) else "Date not set"
             
-            holder.tvTripInfo.text = """
-                ${trip.origin} → ${trip.destination}
-                $dateStr • ${trip.seatsAvailable} seat(s)
-                Status: ${trip.status}
-            """.trimIndent()
+            holder.tvDateTime.text = dateStr
+            holder.tvOrigin.text = trip.origin
+            holder.tvDestination.text = trip.destination
+            holder.tvTripDetails.text = "${trip.seatsAvailable} seats • $${String.format("%.2f", trip.pricePerSeat)}/seat"
+            holder.tvStatus.text = trip.status.capitalize()
+            
+            // Set status color
+            when (trip.status.lowercase()) {
+                "active" -> holder.tvStatus.backgroundTintList = 
+                    android.content.res.ColorStateList.valueOf(resources.getColor(R.color.success, null))
+                "inactive" -> holder.tvStatus.backgroundTintList = 
+                    android.content.res.ColorStateList.valueOf(resources.getColor(R.color.text_secondary, null))
+                "completed" -> holder.tvStatus.backgroundTintList = 
+                    android.content.res.ColorStateList.valueOf(resources.getColor(R.color.info, null))
+                else -> holder.tvStatus.backgroundTintList = 
+                    android.content.res.ColorStateList.valueOf(resources.getColor(R.color.text_hint, null))
+            }
+            
+            holder.itemView.setOnClickListener {
+                onItemClick(trip)
+            }
         }
         
         override fun getItemCount() = trips.size
