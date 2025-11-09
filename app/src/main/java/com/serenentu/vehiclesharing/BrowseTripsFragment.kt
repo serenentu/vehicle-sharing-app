@@ -432,7 +432,6 @@ class BrowseTripsFragment : Fragment() {
                 holder.tvQuietRide.visibility = if (trip.quietRide) View.VISIBLE else View.GONE
                 
                 // Handle book button click
-                val availableSeats = trip.seatsAvailable - trip.bookedSeats
                 if (availableSeats <= 0) {
                     holder.btnBookTrip.isEnabled = false
                     holder.btnBookTrip.text = "Fully Booked"
