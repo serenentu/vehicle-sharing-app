@@ -4,6 +4,7 @@ data class User(
     val uid: String = "",
     val fullName: String = "",
     val email: String = "",
+    val profilePictureUrl: String = "", // NEW: URL to profile picture in Firebase Storage
     val genderPreference: String = "no_preference", // no_preference, same_gender
     val noSmokingPreference: Boolean = false,
     val noPetsPreference: Boolean = false,

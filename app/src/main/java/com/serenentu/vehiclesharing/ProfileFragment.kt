@@ -1,5 +1,6 @@
 package com.serenentu.vehiclesharing
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -11,13 +12,18 @@ import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.serenentu.vehiclesharing.data.NTULocations
 import com.serenentu.vehiclesharing.data.model.User
 
@@ -25,6 +31,25 @@ class ProfileFragment : Fragment() {
     
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
+    private lateinit var storage: FirebaseStorage
+    private var selectedImageUri: Uri? = null
+    private lateinit var ivProfilePicture: ImageView
+    
+    // Image picker launcher
+    private val imagePickerLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.data?.let { uri ->
+                selectedImageUri = uri
+                // Display selected image
+                ivProfilePicture.setImageURI(uri)
+                ivProfilePicture.setPadding(0, 0, 0, 0)
+                // Upload image
+                uploadProfilePicture(uri)
+            }
+        }
+    }
     
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,7 +59,10 @@ class ProfileFragment : Fragment() {
         
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
+        storage = FirebaseStorage.getInstance()
         
+        ivProfilePicture = view.findViewById(R.id.ivProfilePicture)
+        val fabChangePicture = view.findViewById<FloatingActionButton>(R.id.fabChangePicture)
         val tvUserName = view.findViewById<TextView>(R.id.tvUserName)
         val tvUserEmail = view.findViewById<TextView>(R.id.tvUserEmail)
         val rbNoPreference = view.findViewById<RadioButton>(R.id.rbNoPreference)
@@ -49,6 +77,15 @@ class ProfileFragment : Fragment() {
         val btnSaveProfile = view.findViewById<Button>(R.id.btnSaveProfile)
         val btnLogout = view.findViewById<Button>(R.id.btnLogout)
         val btnEmergencyCall = view.findViewById<Button>(R.id.btnEmergencyCall)
+        
+        // Setup image picker
+        fabChangePicture.setOnClickListener {
+            openImagePicker()
+        }
+        
+        ivProfilePicture.setOnClickListener {
+            openImagePicker()
+        }
         
         // Setup dropdown adapters
         val hallAdapter = ArrayAdapter(
@@ -98,6 +135,15 @@ class ProfileFragment : Fragment() {
                         etHallResident.setText(user.hallResident, false)
                         etClubMember.setText(user.clubMember)
                         etCourseCohort.setText(user.courseCohort, false)
+                        
+                        // Load profile picture
+                        if (user.profilePictureUrl.isNotEmpty()) {
+                            Glide.with(this)
+                                .load(user.profilePictureUrl)
+                                .circleCrop()
+                                .into(ivProfilePicture)
+                            ivProfilePicture.setPadding(0, 0, 0, 0)
+                        }
                     }
                 } else {
                     // Profile doesn't exist, show basic info
@@ -153,5 +199,42 @@ class ProfileFragment : Fragment() {
         }
         
         return view
+    }
+    
+    private fun openImagePicker() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        imagePickerLauncher.launch(intent)
+    }
+    
+    private fun uploadProfilePicture(imageUri: Uri) {
+        val currentUser = auth.currentUser ?: return
+        
+        Toast.makeText(context, "Uploading profile picture...", Toast.LENGTH_SHORT).show()
+        
+        // Create a reference to store the image
+        val storageRef = storage.reference
+            .child("profile_pictures/${currentUser.uid}.jpg")
+        
+        // Upload the file
+        storageRef.putFile(imageUri)
+            .addOnSuccessListener {
+                // Get download URL
+                storageRef.downloadUrl.addOnSuccessListener { uri ->
+                    // Update Firestore with the image URL
+                    firestore.collection("users")
+                        .document(currentUser.uid)
+                        .update("profilePictureUrl", uri.toString())
+                        .addOnSuccessListener {
+                            Toast.makeText(context, "Profile picture updated!", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(context, "Failed to update profile: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(context, "Failed to upload image: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 }
