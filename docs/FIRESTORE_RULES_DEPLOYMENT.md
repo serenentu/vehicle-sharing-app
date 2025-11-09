@@ -33,7 +33,12 @@ service cloud.firestore {
     match /trips/{tripId} {
       allow read: if request.auth != null;
       allow create: if request.auth != null && request.auth.uid == request.resource.data.driverUid;
-      allow update, delete: if request.auth != null && request.auth.uid == resource.data.driverUid;
+      // Allow driver to fully update/delete their trip
+      // Allow any authenticated user to update trip for booking purposes
+      // (passengers list, bookedSeats, seatsAvailable)
+      // Note: In production, consider using Cloud Functions for booking updates
+      allow update: if request.auth != null;
+      allow delete: if request.auth != null && request.auth.uid == resource.data.driverUid;
     }
     
     // Bookings can be created by authenticated users
@@ -68,7 +73,10 @@ service cloud.firestore {
 
 ### Trips Collection
 - Any authenticated user can read active trips
-- Only the driver who created a trip can update or delete it
+- Only drivers can create trips (must match their UID)
+- Any authenticated user can update trips (needed for booking flow to update passenger list and seat counts)
+- Only the driver who created a trip can delete it
+- **Note**: In production, consider using Cloud Functions to handle trip updates during booking for better security
 
 ### Bookings Collection (NEW)
 - Any authenticated user can create a booking
@@ -98,8 +106,16 @@ These rules ensure:
 - ✅ Users must be authenticated to perform any operations
 - ✅ Bookings are private - only the passenger and driver can see their bookings
 - ✅ Users cannot book trips for other users (enforced at app level)
-- ✅ Only trip owners can modify their trips
+- ✅ Only trip creators can delete trips
 - ✅ All sensitive data is protected
+- ⚠️ Any authenticated user can update trips (required for booking flow)
+
+**Important Security Consideration:**
+The current rules allow any authenticated user to update trips, which is necessary for the booking flow where passengers update the passenger list and seat counts. While this works for the academic project scope, production deployments should consider:
+- Using Firebase Cloud Functions to handle trip updates server-side
+- Implementing field-level validation
+- Adding transaction-based seat availability checks
+- Rate limiting to prevent abuse
 
 For production deployment, consider:
 - Adding rate limiting to prevent spam bookings

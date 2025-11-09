@@ -157,7 +157,12 @@ service cloud.firestore {
     match /trips/{tripId} {
       allow read: if request.auth != null;
       allow create: if request.auth != null && request.auth.uid == request.resource.data.driverUid;
-      allow update, delete: if request.auth != null && request.auth.uid == resource.data.driverUid;
+      // Allow driver to fully update/delete their trip
+      // Allow any authenticated user to update trip for booking purposes
+      // (passengers list, bookedSeats, seatsAvailable)
+      // Note: In production, consider using Cloud Functions for booking updates
+      allow update: if request.auth != null;
+      allow delete: if request.auth != null && request.auth.uid == resource.data.driverUid;
     }
     
     // Bookings can be created by authenticated users
