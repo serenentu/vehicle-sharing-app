@@ -1,5 +1,6 @@
 package com.serenentu.vehiclesharing
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,12 +9,16 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.serenentu.vehiclesharing.data.model.Booking
 import com.serenentu.vehiclesharing.data.model.Trip
 import java.text.SimpleDateFormat
 import java.util.*
@@ -225,6 +230,146 @@ class BrowseTripsFragment : Fragment() {
         }
     }
     
+    private fun openCheckoutDialog(trip: Trip) {
+        val auth = FirebaseAuth.getInstance()
+        val currentUser = auth.currentUser
+        
+        if (currentUser == null) {
+            Toast.makeText(context, "Please login to book a ride", Toast.LENGTH_SHORT).show()
+            return
+        }
+        
+        // Check if user is trying to book their own trip
+        if (currentUser.uid == trip.driverUid) {
+            Toast.makeText(context, "You cannot book your own trip", Toast.LENGTH_SHORT).show()
+            return
+        }
+        
+        // Create custom dialog view
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_checkout, null)
+        
+        val tvTripSummary = dialogView.findViewById<TextView>(R.id.tvTripSummary)
+        val tvDriverInfo = dialogView.findViewById<TextView>(R.id.tvDriverInfo)
+        val tvPriceBreakdown = dialogView.findViewById<TextView>(R.id.tvPriceBreakdown)
+        val rgPaymentMethod = dialogView.findViewById<RadioGroup>(R.id.rgPaymentMethod)
+        val btnConfirmBooking = dialogView.findViewById<Button>(R.id.btnConfirmBooking)
+        val btnCancel = dialogView.findViewById<Button>(R.id.btnCancel)
+        
+        // Format trip details
+        val dateFormat = SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault())
+        val tripDate = if (trip.dateTime > 0) dateFormat.format(Date(trip.dateTime)) else "Date not set"
+        
+        tvTripSummary.text = "${trip.origin} → ${trip.destination}\n$tripDate"
+        tvDriverInfo.text = "Driver: ${trip.driverName}"
+        tvPriceBreakdown.text = String.format("Price per seat: $%.2f\nTotal: $%.2f", trip.pricePerSeat, trip.pricePerSeat)
+        
+        val dialog = AlertDialog.Builder(requireContext())
+            .setTitle("Checkout")
+            .setView(dialogView)
+            .create()
+        
+        btnConfirmBooking.setOnClickListener {
+            val selectedPaymentId = rgPaymentMethod.checkedRadioButtonId
+            if (selectedPaymentId == -1) {
+                Toast.makeText(context, "Please select a payment method", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            
+            val paymentMethod = when (selectedPaymentId) {
+                R.id.rbCash -> "cash"
+                R.id.rbPayNow -> "paynow"
+                R.id.rbCard -> "card"
+                else -> "cash"
+            }
+            
+            // Disable button to prevent double clicks
+            btnConfirmBooking.isEnabled = false
+            
+            // Create booking
+            processBooking(trip, currentUser.uid, paymentMethod, dialog, btnConfirmBooking)
+        }
+        
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        
+        dialog.show()
+    }
+    
+    private fun processBooking(trip: Trip, passengerUid: String, paymentMethod: String, dialog: AlertDialog, button: Button) {
+        // Get passenger name from Firestore
+        firestore.collection("users")
+            .document(passengerUid)
+            .get()
+            .addOnSuccessListener { document ->
+                val passengerName = document.getString("fullName") ?: "Unknown"
+                
+                // Create booking object
+                val bookingId = firestore.collection("bookings").document().id
+                val booking = Booking(
+                    bookingId = bookingId,
+                    tripId = trip.tripId,
+                    passengerUid = passengerUid,
+                    passengerName = passengerName,
+                    driverUid = trip.driverUid,
+                    driverName = trip.driverName,
+                    origin = trip.origin,
+                    destination = trip.destination,
+                    dateTime = trip.dateTime,
+                    seatsBooked = 1,
+                    totalPrice = trip.pricePerSeat,
+                    paymentMethod = paymentMethod,
+                    bookingStatus = "confirmed"
+                )
+                
+                // Save booking to Firestore
+                firestore.collection("bookings")
+                    .document(bookingId)
+                    .set(booking)
+                    .addOnSuccessListener {
+                        // Update trip with new passenger
+                        val updatedPassengers = trip.passengers.toMutableList()
+                        updatedPassengers.add(passengerUid)
+                        
+                        firestore.collection("trips")
+                            .document(trip.tripId)
+                            .update(
+                                mapOf(
+                                    "passengers" to updatedPassengers,
+                                    "bookedSeats" to trip.bookedSeats + 1,
+                                    "seatsAvailable" to trip.seatsAvailable - 1
+                                )
+                            )
+                            .addOnSuccessListener {
+                                if (isAdded && context != null) {
+                                    Toast.makeText(context, "Booking confirmed! Check History for details.", Toast.LENGTH_LONG).show()
+                                    dialog.dismiss()
+                                    // Reload trips to show updated availability
+                                    loadTrips()
+                                }
+                            }
+                            .addOnFailureListener { e ->
+                                if (isAdded && context != null) {
+                                    Toast.makeText(context, "Failed to update trip: ${e.message}", Toast.LENGTH_SHORT).show()
+                                }
+                                button.isEnabled = true
+                            }
+                    }
+                    .addOnFailureListener { e ->
+                        if (isAdded && context != null) {
+                            Toast.makeText(context, "Failed to create booking: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                        button.isEnabled = true
+                    }
+            }
+            .addOnFailureListener { e ->
+                if (isAdded && context != null) {
+                    Toast.makeText(context, "Failed to get user info: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+                button.isEnabled = true
+            }
+    }
+    
     // Simple adapter for trips
     inner class TripsAdapter(
         private val trips: List<Trip>,
@@ -236,12 +381,14 @@ class BrowseTripsFragment : Fragment() {
             val tvDriverBadges: TextView = itemView.findViewById(R.id.tvDriverBadges)
             val tvDateTime: TextView = itemView.findViewById(R.id.tvDateTime)
             val tvSeats: TextView = itemView.findViewById(R.id.tvSeats)
+            val tvPrice: TextView = itemView.findViewById(R.id.tvPrice)
             val tvOrigin: TextView = itemView.findViewById(R.id.tvOrigin)
             val tvDestination: TextView = itemView.findViewById(R.id.tvDestination)
             val tvNoSmoking: TextView = itemView.findViewById(R.id.tvNoSmoking)
             val tvNoPets: TextView = itemView.findViewById(R.id.tvNoPets)
             val tvMusic: TextView = itemView.findViewById(R.id.tvMusic)
             val tvQuietRide: TextView = itemView.findViewById(R.id.tvQuietRide)
+            val btnBookTrip: Button = itemView.findViewById(R.id.btnBookTrip)
         }
         
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TripViewHolder {
@@ -263,7 +410,9 @@ class BrowseTripsFragment : Fragment() {
                 
                 holder.tvDriverName.text = trip.driverName.ifEmpty { "Unknown Driver" }
                 holder.tvDateTime.text = dateStr
-                holder.tvSeats.text = "${trip.seatsAvailable} seat${if (trip.seatsAvailable != 1) "s" else ""}"
+                val availableSeats = trip.seatsAvailable - trip.bookedSeats
+                holder.tvSeats.text = "$availableSeats seat${if (availableSeats != 1) "s" else ""}"
+                holder.tvPrice.text = String.format("$%.2f/seat", trip.pricePerSeat)
                 holder.tvOrigin.text = trip.origin.ifEmpty { "Not specified" }
                 holder.tvDestination.text = trip.destination.ifEmpty { "Not specified" }
                 
@@ -281,6 +430,21 @@ class BrowseTripsFragment : Fragment() {
                 holder.tvNoPets.visibility = if (trip.noPets) View.VISIBLE else View.GONE
                 holder.tvMusic.visibility = if (trip.musicAllowed) View.VISIBLE else View.GONE
                 holder.tvQuietRide.visibility = if (trip.quietRide) View.VISIBLE else View.GONE
+                
+                // Handle book button click
+                val availableSeats = trip.seatsAvailable - trip.bookedSeats
+                if (availableSeats <= 0) {
+                    holder.btnBookTrip.isEnabled = false
+                    holder.btnBookTrip.text = "Fully Booked"
+                } else {
+                    holder.btnBookTrip.isEnabled = true
+                    holder.btnBookTrip.text = "Book Ride"
+                    holder.btnBookTrip.setOnClickListener {
+                        if (isAdded && context != null) {
+                            openCheckoutDialog(trip)
+                        }
+                    }
+                }
             } catch (e: Exception) {
                 // Handle any errors gracefully
                 holder.tvDriverName.text = "Error loading trip"

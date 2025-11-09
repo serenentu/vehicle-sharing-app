@@ -167,6 +167,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Available Seats"
+                    android:layout_marginBottom="12dp"
                     app:startIconDrawable="@drawable/ic_profile"
                     app:startIconTint="@color/primary">
 
@@ -175,6 +176,25 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
+                        android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Price Per Seat Input -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilPrice"
+                    style="@style/Widget.VehicleSharing.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Price Per Seat (SGD)"
+                    app:prefixText="$"
+                    app:startIconDrawable="@android:drawable/ic_menu_info_details"
+                    app:startIconTint="@color/accent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPricePerSeat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
                         android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 

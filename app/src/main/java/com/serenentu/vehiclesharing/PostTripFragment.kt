@@ -39,6 +39,7 @@ class PostTripFragment : Fragment() {
         val etDestination = view.findViewById<AutoCompleteTextView>(R.id.etDestination)
         val etDateTime = view.findViewById<EditText>(R.id.etDateTime)
         val etSeatsAvailable = view.findViewById<EditText>(R.id.etSeatsAvailable)
+        val etPricePerSeat = view.findViewById<EditText>(R.id.etPricePerSeat)
         val cbNoSmoking = view.findViewById<CheckBox>(R.id.cbNoSmoking)
         val cbNoPets = view.findViewById<CheckBox>(R.id.cbNoPets)
         val cbMusicAllowed = view.findViewById<CheckBox>(R.id.cbMusicAllowed)
@@ -74,10 +75,11 @@ class PostTripFragment : Fragment() {
             val origin = etOrigin.text.toString().trim()
             val destination = etDestination.text.toString().trim()
             val seatsText = etSeatsAvailable.text.toString().trim()
+            val priceText = etPricePerSeat.text.toString().trim()
             val additionalNotes = etAdditionalNotes.text.toString().trim()
             
             // Validation
-            if (origin.isEmpty() || destination.isEmpty() || seatsText.isEmpty()) {
+            if (origin.isEmpty() || destination.isEmpty() || seatsText.isEmpty() || priceText.isEmpty()) {
                 Toast.makeText(context, "Please fill in required fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -90,6 +92,12 @@ class PostTripFragment : Fragment() {
             val seats = seatsText.toIntOrNull()
             if (seats == null || seats <= 0) {
                 Toast.makeText(context, "Please enter valid number of seats", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            
+            val price = priceText.toDoubleOrNull()
+            if (price == null || price < 0) {
+                Toast.makeText(context, "Please enter valid price", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             
@@ -112,6 +120,7 @@ class PostTripFragment : Fragment() {
                         destination = destination,
                         dateTime = selectedDateTime!!,
                         seatsAvailable = seats,
+                        pricePerSeat = price,
                         noSmoking = cbNoSmoking.isChecked,
                         noPets = cbNoPets.isChecked,
                         musicAllowed = cbMusicAllowed.isChecked,
@@ -131,6 +140,7 @@ class PostTripFragment : Fragment() {
                             etDestination.text.clear()
                             etDateTime.text.clear()
                             etSeatsAvailable.text.clear()
+                            etPricePerSeat.text.clear()
                             etAdditionalNotes.text.clear()
                             cbNoSmoking.isChecked = false
                             cbNoPets.isChecked = false
