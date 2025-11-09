@@ -46,7 +46,7 @@ class LoginFragment : Fragment() {
                     btnLogin.isEnabled = true
                     if (task.isSuccessful) {
                         Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show()
-                        findNavController().navigate(R.id.action_loginFragment_to_historyFragment)
+                        findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                     } else {
                         Toast.makeText(
                             context, 

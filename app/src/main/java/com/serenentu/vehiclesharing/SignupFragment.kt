@@ -88,7 +88,7 @@ class SignupFragment : Fragment() {
                                 .set(userProfile)
                                 .addOnSuccessListener {
                                     Toast.makeText(context, "Account created successfully", Toast.LENGTH_SHORT).show()
-                                    findNavController().navigate(R.id.action_signupFragment_to_historyFragment)
+                                    findNavController().navigate(R.id.action_signupFragment_to_homeFragment)
                                 }
                                 .addOnFailureListener { e ->
                                     btnSignup.isEnabled = true
