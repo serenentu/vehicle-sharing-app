@@ -27,7 +27,7 @@ class BrowseTripsFragment : Fragment() {
     
     private lateinit var firestore: FirebaseFirestore
     private lateinit var rvTrips: RecyclerView
-    private lateinit var tvEmptyState: TextView
+    private lateinit var tvEmptyState: View
     private lateinit var tripsAdapter: TripsAdapter
     private val trips = mutableListOf<Trip>()
     private val userBadgesCache = mutableMapOf<String, String>() // Cache for user badges
